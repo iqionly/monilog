@@ -1,27 +1,35 @@
-@extends('main')
+@extends('index')
 
 @section('content')
+<div class="text-center" style="margin-top: 80px;">
+    <h1 class="text-white">SELAMAT DATANG DI MONITOR LOG<br>MYTALENT IOH</h1>
+    <p class="text-white">Data Performance Employee di MyTalent</p>
+</div>
+
+<div class="toolbar py-5 py-lg-15" id="kt_toolbar">
+</div>
+
 <!--start:Container-->
 <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
     <div class="content flex-row-fluid" id="kt_content">
         <div class="d-flex justify-content-center mb-5">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: -25px;">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                    <button class="nav-link text-white btn btn-primary active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
                         <i class='bx bxs-category-alt bx-sm me-2'></i>
                         <span class="fw-bold">Overview</span>
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="analytic-table-tab" data-bs-toggle="pill" data-bs-target="#analytic-table" type="button" role="tab" aria-controls="analytic-table" aria-selected="false">
+                    <button class="nav-link text-white btn btn-primary" id="analytic-table-tab" data-toggle="pill" data-target="#analytic-table" type="button" role="tab" aria-controls="analytic-table" aria-selected="false">
                         <i class='bx bxs-bar-chart-alt-2 bx-sm me-2'></i>
                         <span class="fw-bold">Analytic Table</span>
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="log-data-tab" data-bs-toggle="pill" data-bs-target="#log-data" type="button" role="tab" aria-controls="log-data" aria-selected="false">
+                    <button class="nav-link text-white btn btn-primary" id="log-data-tab" data-toggle="pill" data-target="#log-data" type="button" role="tab" aria-controls="log-data" aria-selected="false">
                         <i class='bx bx-library bx-sm me-2'></i>
                         <span class="fw-bold">Log Data</span>
                     </button>
@@ -117,4 +125,14 @@
     <!--end::Post-->
 </div>
 <!--end::Container-->
+
+@endsection
+
+@section('scripts')
+<script>
+    $('#pills-tab button').on('click', function(e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>
 @endsection
