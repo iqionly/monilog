@@ -354,7 +354,10 @@ $('.btn-sync').click(function(){
             '_end_date': '2023-02-07'
         },
         success: () => { KTApp.unblock('body') },
-        error: () => { Swal.fire({ title: 'Something went wrong' }) }
+        error: function (response) { 
+            Swal.fire({ title: response.statusText })
+        },
+        complete: () => { KTApp.unblock('body') }
     });
 });
 $('.btn-sync-employee').click(function(){
@@ -363,7 +366,10 @@ $('.btn-sync-employee').click(function(){
         url: urlSyncEmp,
         method: 'post',
         success: () => { KTApp.unblock('body') },
-        error: () => { Swal.fire({ title: 'Something went wrong' }) }
+        error: function (response) { 
+            Swal.fire({ title: response.statusText })
+        },
+        complete: () => { KTApp.unblock('body') }
     });
 });
 $('.btn-sync-user').click(function(){
@@ -371,7 +377,10 @@ $('.btn-sync-user').click(function(){
     $.ajax({
         url: urlSyncUsr,
         success: () => { KTApp.unblock('body') },
-        error: () => { Swal.fire({ title: 'Something went wrong' }) }
+        error: function (response) { 
+            Swal.fire({ title: response.statusText })
+        },
+        complete: () => { KTApp.unblock('body') }
     });
 });
 $('#togglePassword').click(function() {

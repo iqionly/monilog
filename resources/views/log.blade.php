@@ -174,10 +174,13 @@
 
 @endsection
 
+{{-- @dd($series_data) --}}
+
 @section('scripts')
 <script src="assets/js/pages/features/charts/apexcharts.js"></script>
 <script>
     const urlLogDataTable = "{{ route('dashboard.log-data') }}"
+    const urlGraph2 = "{{ route('dashboard.graph-2') }}";
     $('#pills-tab button').on('click', function(e) {
         e.preventDefault()
         $(this).tab('show')
@@ -263,39 +266,48 @@
     $('#user-table').DataTable({});
 
     var _demo2 = function() {
-        const apexChart = "#chart-url";
-        var options = {
-            series: [{
-                name: 'series1'
-                , data: [31, 40, 28, 51, 42, 109, 100]
-            }, {
-                name: 'series2'
-                , data: [11, 32, 45, 32, 34, 52, 41]
-            }]
-            , chart: {
-                height: 350
-                , type: 'area'
-            }
-            , dataLabels: {
-                enabled: false
-            }
-            , stroke: {
-                curve: 'smooth'
-            }
-            , xaxis: {
-                type: 'datetime'
-                , categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-            }
-            , tooltip: {
-                x: {
-                    format: 'dd/MM/yy HH:mm'
-                }
-            , }
-            , colors: [primary, success]
-        };
+        $.ajax({
+            url: urlGraph2,
+            data: {
+                url_0: "{{ $url_access_chart[0]->_id }}",
+                url_1: "{{ $url_access_chart[1]->_id }}"
+            },
+            success: function(response) {
+                const apexChart = "#chart-url";
+                var options = {
+                    series: [{
+                        name: response['names'][0]
+                        , data: response[0]
+                    }, {
+                        name: response['names'][1]
+                        , data: response[1]
+                    }]
+                    , chart: {
+                        height: 350
+                        , type: 'area'
+                    }
+                    , dataLabels: {
+                        enabled: false
+                    }
+                    , stroke: {
+                        curve: 'smooth'
+                    }
+                    , xaxis: {
+                        type: 'date'
+                        , categories: response[2]
+                    }
+                    , tooltip: {
+                        x: {
+                            format: 'dd/MM/yy'
+                        }
+                    , }
+                    , colors: [primary, success]
+                };
 
-        var chart = new ApexCharts(document.querySelector(apexChart), options);
-        chart.render();
+                var chart = new ApexCharts(document.querySelector(apexChart), options);
+                chart.render();
+            }
+        })
     }
 
     var _demo3 = function() {

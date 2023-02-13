@@ -65,9 +65,9 @@ class SettingsController extends Controller
         $token = $this->get_token($settings);
 
         $client = $this->getClient($token)->get($settings->url_log, [
-                '_start_date' => $last_date_data,
-                '_limit' => $this->limitation
-            ]);
+            '_start_date' => $last_date_data,
+            '_limit' => $this->limitation
+        ]);
 
         $response = $client->collect()->map(function($item) {
             return [
@@ -80,6 +80,10 @@ class SettingsController extends Controller
                 'updated_at'        => $this->date_bson($item['date_update'])
             ];
         });
+
+        if($response->count() == 0) {
+            return response('', 402)->json(['message' => 'Log Not Found']);
+        }
 
         Log::insert($response->toArray());
 

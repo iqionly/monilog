@@ -6,6 +6,9 @@ use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use MongoDB\BSON\Regex;
+use MongoDB\Model\BSONArray;
 
 class DashboardController extends Controller
 {
@@ -102,5 +105,100 @@ class DashboardController extends Controller
             'recordsFiltered' => $filtered_records,
             'recordsTotal' => $total_recods
         ];
+    }
+
+    public function graph_2(Request $request) {
+        $url_access_graph = Log::raw(function($collection) use ($request) {
+            return $collection->aggregate([
+                ['$match' => [
+                    'url_access' => ['$ne' => null],
+                    'url_access' => ['$ne' => ''],
+                    'url_access' => [
+                        '$in' => [
+                            $request->url_0,
+                            $request->url_1
+                        ]
+                    ]]
+                ], 
+                ['$addFields' => [
+                    'created_at' => [
+                        '$dateToParts' => [
+                            'date' => '$created_at'
+                        ]
+                    ]]
+                ],
+                ['$group' => [
+                    '_id' => [
+                        'year' => '$created_at.year',
+                        'month' => '$created_at.month',
+                        'interval' => [
+                            '$subtract' => ['$created_at.day', ['$mod' => ['$created_at.day', 1]]]
+                        ], 
+                        'url_access' => '$url_access'
+                    ],
+                    'count' => ['$sum' => 1]]
+                ],
+                ['$project' => ['_id' => 0, 'count' => 1, 'url_access' => '$_id.url_access',
+                    'from' => ['$dateFromParts' => ['year' => '$_id.year', 'month' => '$_id.month', 'day' => '$_id.interval']],
+                    'to' => ['$dateFromParts' => ['year' => '$_id.year', 'month' => '$_id.month', 'day' => ['$add' => ['$_id.interval', 10]]]]]
+                ],
+                ['$sort' => ['from' => -1, 'url_access' => -1]],
+                ['$group' => ['_id' => '$url_access', 'statistics' => [
+                    '$push' => ['count' => '$count', 'from' => ['$dateToString' => ['date' => '$from', 'format' => '%Y-%m-%d %H:%M:%S']]]]
+                ]],
+                ['$project' => ['_id' => 0, 'url_access' => '$_id', 'statistics' => ['$slice' => ['$statistics', 10]]]]
+            ]);
+        });
+
+        $url_access_graph->map(function($data) {
+            $data->statistics = new Collection(json_decode(json_encode($data->statistics, true)));
+            return $data;
+        });
+
+        // dd($url_access_graph);
+
+        $data_1 = $url_access_graph[0]->statistics->pluck('count', 'from');
+        $data_2 = $url_access_graph[0]->statistics->pluck('from');
+
+        $data_3 = $url_access_graph[1]->statistics->pluck('count', 'from');
+        $data_4 = $url_access_graph[1]->statistics->pluck('from');
+
+        $dates = $data_2->merge($data_4, $data_2);
+
+        // dd(date('Y-m-d H:i:s', strtotime($dates->first())), date('Y-m-d H:i:s', strtotime($dates->last())));
+        $different = Carbon::parse($dates->last())->diffInDays($dates->first());
+        for($day = date('Y-m-d H:i:s', strtotime($dates->first())); $day >= date('Y-m-d H:i:s', strtotime($dates->last())); $day = Carbon::parse($day)->subDays(1)->format('Y-m-d H:i:s')) {
+            $data_1[$day] = isset($data_1[$day]) ? $data_1[$day] : 0;
+            $data_3[$day] = isset($data_3[$day]) ? $data_3[$day] : 0;
+        }
+
+        foreach($dates = array_keys($data_1->sortKeys()->toArray()) as $key => $date) {
+            $dates[$key] = substr($date, 0, 10);
+        }
+
+        $result_1 = [];
+        $result_2 = [];
+        
+        $i = 0;
+        foreach($data_1->sortKeys() as $item) {
+            $result_1[$i] = $item;
+            $i++;
+        }
+        $i = 0;
+        foreach($data_3->sortKeys() as $item) {
+            $result_2[$i] = $item;
+            $i++;
+        }
+        
+        if($data_1->count() != $data_3->count()) {
+            if($data_1->count() > $data_3->count()) {
+                array_pop($result_1);
+            }   
+            if($data_3->count() > $data_1->count()) {
+                array_pop($result_2);
+            } 
+        }
+
+        return [ 'names' => ['url top 1', 'url top 2'], $result_1, $result_2, $dates];
     }
 }
