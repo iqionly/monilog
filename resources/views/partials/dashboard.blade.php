@@ -4,7 +4,10 @@
         <div class="card card-custom card-stretch gutter-b">
             <!--begin::Header-->
             <div class="card-header border-0">
-                <h3 class="card-title font-weight-bolder text-dark">Trends</h3>
+                <h3 class="card-title font-weight-bolder text-dark">
+                    <span class="card-label fw-bold fs-3 mb-1">Popular URL</span>
+                    <span class="text-muted fw-semibold fs-7">(A Week)</span>
+                </h3>
                 <div class="card-toolbar">
                     <div class="dropdown dropdown-inline">
                         <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

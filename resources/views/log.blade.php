@@ -266,11 +266,14 @@
     $('#user-table').DataTable({});
 
     var _demo2 = function() {
+        if({{ !isset($url_access_chart[0]) || !isset($url_access_chart[1]) }}) {
+            return false;
+        }
         $.ajax({
             url: urlGraph2,
             data: {
-                url_0: "{{ $url_access_chart[0]->_id }}",
-                url_1: "{{ $url_access_chart[1]->_id }}",
+                url_0: "{{ $url_access_chart[0]->_id ?? 0 }}",
+                url_1: "{{ $url_access_chart[1]->_id ?? 0 }}",
                 user: {{ $user->user_id ?? "null" }}
             },
             success: function(response) {
