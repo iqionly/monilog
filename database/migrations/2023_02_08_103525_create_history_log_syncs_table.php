@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerformanceTransactionsTable extends Migration
+class CreateHistoryLogSyncsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreatePerformanceTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('performance_transactions', function (Blueprint $table) {
+        Schema::create('history_log_syncs', function (Blueprint $table) {
             $table->id();
+            $table->string('params')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreatePerformanceTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('performance_transactions');
+        Schema::dropIfExists('history_log_syncs');
     }
 }

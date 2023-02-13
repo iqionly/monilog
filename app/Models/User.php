@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    protected $connection = 'mongodb';
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'user_id', 'nik', 'email', 'full_name'
     ];
 
     /**
@@ -37,4 +40,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function logs() {
+        return $this->belongsToMany(Log::class, 'user_id', 'user_id');
+    }
+
+    public function employee() {
+        return $this->belongsTo(Employee::class, 'nik', 'nik');
+    }
 }

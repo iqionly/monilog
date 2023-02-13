@@ -171,13 +171,15 @@
                                 <span class="text-muted font-weight-bold font-size-sm mt-1">Change your API MyTalent</span>
                             </div>
                             <div class="card-toolbar">
-                                <button type="reset" class="btn btn-success mr-2">Save Changes</button>
-                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                <button type="button" class="btn btn-info mr-2 btn-sync">Sync Now</button>
+                                <button type="submit" class="btn btn-success mr-2" form="form-settings">Save Changes</button>
+                                {{-- <button type="reset" class="btn btn-secondary">Cancel</button> --}}
                             </div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form class="form">
+                        <form class="form" action="{{ route('settings.update') }}" method="post" id="form-settings">
+                            @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <label class="col-xl-3"></label>
@@ -188,16 +190,21 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Email</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input type="_email" class="form-control"  placeholder="Enter Email"/>
+                                        <input name="_email" type="email" class="form-control"  placeholder="Enter Email" value="{{ $settings->email ?? null }}"/>
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Password</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input type="_password" class="form-control"  placeholder="Enter Password"/>
+                                        <div class="input-icon input-icon-right">
+                                            <input name="_password" type="password" class="form-control"  placeholder="Enter Password" value="{{ $settings->password ?? null }}"/>
+                                            <span><i class="icon-md text-dark-50 ki ki-hide ki-eye" id="togglePassword"></i></span>
+                                        </div>
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
                                     </div>
+                                </div>
+                                <div class="form-group row">
                                 </div>
                                 <div class="separator separator-dashed my-10"></div>
                                 <div class="row">
@@ -206,15 +213,10 @@
                                         <h5 class="font-weight-bold mb-6">Token MyTalent:</h5>
                                     </div>
                                 </div>
-                                <div class="form-group row align-items-center">
+                                <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">API Token</label>
-                                    <div class="input-group col-lg-9 col-xl-6">
-                                        <input type="_bt" class="form-control"  placeholder="Enter Bearer Token Manual"/>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-success" type="button">Get!</button>
-                                        </div>
-                                    </div>
                                     <div class="col-lg-9 col-xl-6">
+                                        <input name="_bt" type="text" class="form-control" value="{{ $settings->token_api ?? null }}" placeholder="Enter Bearer Token Manual" disabled/>
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
                                     </div>
                                 </div>
@@ -223,10 +225,55 @@
                                     <div class="col-lg-9 col-xl-6">
                                         <span class="switch switch-sm">
                                             <label>
-                                                <input type="checkbox" name="_schedule_api_on" />
+                                                <input type="checkbox" name="_schedule_api_on" {{ $settings && $settings->enable_schedule_api == 'on' ? 'checked' : '' }} />
                                                 <span></span>
                                             </label>
                                         </span>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h5 class="font-weight-bold mb-6">API URL MyTalent:</h5>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">API URL</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input name="_url_api" type="text" class="form-control" value="{{ $settings->url_api ?? 'https://mytalent.ioh.co.id/api' }}" placeholder="Enter API URL MyTalent"/>
+                                        <span class="form-text text-danger">Required Field</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Log URL</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input name="_url_log" type="text" class="form-control" value="{{ $settings->url_log ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter Log URL"/>
+                                        <span class="form-text text-danger">Required Field</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Employee URL</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="input-group">
+                                            <input name="_url_emp" type="text" class="form-control" value="{{ $settings->url_employee ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter Employee URL"/>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-info btn-sync-employee">Sync Now</button>
+                                            </div>
+                                        </div>
+                                        <span class="form-text text-danger">Required Field</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">User URL</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="input-group">
+                                            <input name="_url_usr" type="text" class="form-control" value="{{ $settings->url_user ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter User URL"/>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-info btn-sync-user">Sync Now</button>
+                                            </div>
+                                        </div>
+                                        <span class="form-text text-danger">Required Field</span>
                                     </div>
                                 </div>
                                 {{-- <div class="form-group row">
@@ -289,4 +336,55 @@
     <!--end::Entry-->
 </div>
 <!--end::Content-->
+@endsection
+
+@section('scripts')
+<script>
+const urlSync = "{{ route('settings.sync') }}";
+const urlSyncEmp = "{{ route('settings.sync-employee') }}";
+const urlSyncUsr = "{{ route('settings.sync-user') }}";
+
+$('.btn-sync').click(function(){
+    KTApp.block('body');
+    $.ajax({
+        url: urlSync,
+        method: 'post',
+        data: {
+            '_start_date': '2023-02-06',
+            '_end_date': '2023-02-07'
+        },
+        success: () => { KTApp.unblock('body') },
+        error: () => { Swal.fire({ title: 'Something went wrong' }) }
+    });
+});
+$('.btn-sync-employee').click(function(){
+    KTApp.block('body');
+    $.ajax({
+        url: urlSyncEmp,
+        method: 'post',
+        success: () => { KTApp.unblock('body') },
+        error: () => { Swal.fire({ title: 'Something went wrong' }) }
+    });
+});
+$('.btn-sync-user').click(function(){
+    KTApp.block('body');
+    $.ajax({
+        url: urlSyncUsr,
+        success: () => { KTApp.unblock('body') },
+        error: () => { Swal.fire({ title: 'Something went wrong' }) }
+    });
+});
+$('#togglePassword').click(function() {
+    // Toggle the type attribute using
+    // getAttribure() method
+    const type = $('[name="_password"]')
+        .attr('type') === 'password' ?
+        'text' : 'password';
+            
+    $('[name="_password"]').attr('type', type);
+
+    // Toggle the eye and bi-eye icon
+    this.classList.toggle('ki-eye');
+})
+</script>
 @endsection

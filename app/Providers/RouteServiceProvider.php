@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -36,6 +37,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('api')
                 ->group(base_path('routes/api.php'));
         });
+
+        Route::model('user', User::class, function($value) {
+            return User::where('user_id', (int) $value)->first();
+        });
     }
 
     /**
@@ -45,6 +50,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting()
     {
+        RateLimiter::for('sync-employee', function(Request $request) {
+            return Limit::perHour(2);
+        });
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60);
         });
