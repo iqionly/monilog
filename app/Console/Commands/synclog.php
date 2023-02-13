@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\SettingsController;
+use App\Models\Setting;
 use Illuminate\Console\Command;
 
 class synclog extends Command
@@ -39,7 +40,10 @@ class synclog extends Command
     public function handle()
     {
         $settings = new SettingsController();
+        $settingsOption = Setting::first();
 
-        $settings->sync();
+        if($settingsOption && $settingsOption->enable_schedule_api == 'on') {
+            $settings->sync();
+        }
     }
 }
