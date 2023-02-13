@@ -91,7 +91,11 @@ class SettingsController extends Controller
         
         $get_settings->email = $request->_email;
         $get_settings->password = $request->_password;
+        if($get_settings->url_api !== $request->_url_api) {
+            Cache::put('new_url', $request->_url_api, now()->addMinutes(4));
+        }
         $get_settings->url_api = $request->_url_api;
+
         $get_settings->token_api = $this->get_token($get_settings);
         $get_settings->enable_schedule_api = $request->_schedule_api_on;
 
@@ -124,10 +128,13 @@ class SettingsController extends Controller
 
         $client = $this->getClient($token)->get($settings->url_employee);
 
-        $response = $client->collect('data')->toJson();
+        $response = $client->collect('data')->toArray();
 
-        $delete = Employee::query()->delete();
-        Employee::insert($response);
+        if(!empty($response)) {
+            $delete = Employee::query()->delete();
+            Employee::insert($response);
+        }
+
         $response = response()->json(['message' => 'Success Syncronize']);
 
         return $response;
@@ -152,9 +159,7 @@ class SettingsController extends Controller
 
         $client = $this->getClient($token)->get($settings->url_user);
 
-        $response = array_values($client->collect('data')->filter(function($row) {
-            return !empty($row['email']);
-        })->map(function($item){
+        $response = array_values($client->collect('data')->map(function($item){
             return [
                 'user_id' => (int) $item['id'],
                 'nik' => $item['nik'],
@@ -163,9 +168,11 @@ class SettingsController extends Controller
             ];
         })->toArray());
 
-        $delete = User::query()->delete();
-        
-        User::insert($response);
+        if(!empty($response)) {
+            $delete = User::query()->delete();
+            User::insert($response);
+        }
+
         $response = response()->json(['message' => 'Success Syncronize']);
 
         return $response;
@@ -173,7 +180,7 @@ class SettingsController extends Controller
 
     public function get_token(Setting $settings)
     {
-        if(Cache::has('token')) {
+        if(Cache::has('token') && !Cache::has('new_url')) {
             return Cache::get('token');
         }
 
@@ -185,6 +192,7 @@ class SettingsController extends Controller
         $response = $client->object();
         $token = $response->token;
         Cache::put('token', $token, now()->addMinutes(4));
+        Cache::forget('new_url');
         $settings->token_api = $token;
         $settings->save();
 
@@ -198,9 +206,14 @@ class SettingsController extends Controller
             ->withOptions(['proxy' => 'http://10.10.100.250:8080']);
         }
         if($token) {
-            return Http::withToken($token);
+            return Http::withOptions([
+                'verify' => false
+            ])
+            ->withToken($token);
         }
-        return Http::withOptions([]);
+        return Http::withOptions([
+            'verify' => false
+        ]);
     }
 
     private function date_bson($value) {
