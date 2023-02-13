@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('synclog')->everyMinute();
+        $schedule->command('command:synclog')->everyMinute();
     }
 
     /**
