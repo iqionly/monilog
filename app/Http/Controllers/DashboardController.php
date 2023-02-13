@@ -109,17 +109,23 @@ class DashboardController extends Controller
 
     public function graph_2(Request $request) {
         $url_access_graph = Log::raw(function($collection) use ($request) {
+            $match = [
+                'url_access' => ['$ne' => null],
+                'url_access' => ['$ne' => ''],
+                'url_access' => [
+                    '$in' => [
+                        $request->url_0,
+                        $request->url_1
+                    ]
+                ]
+            ];
+
+            if($request->user != null) {
+                $match['user_id'] = (int) $request->user;
+            }
+
             return $collection->aggregate([
-                ['$match' => [
-                    'url_access' => ['$ne' => null],
-                    'url_access' => ['$ne' => ''],
-                    'url_access' => [
-                        '$in' => [
-                            $request->url_0,
-                            $request->url_1
-                        ]
-                    ]]
-                ], 
+                ['$match' => $match ],
                 ['$addFields' => [
                     'created_at' => [
                         '$dateToParts' => [
@@ -154,8 +160,6 @@ class DashboardController extends Controller
             $data->statistics = new Collection(json_decode(json_encode($data->statistics, true)));
             return $data;
         });
-
-        // dd($url_access_graph);
 
         $data_1 = $url_access_graph[0]->statistics->pluck('count', 'from');
         $data_2 = $url_access_graph[0]->statistics->pluck('from');

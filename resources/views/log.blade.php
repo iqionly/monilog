@@ -270,7 +270,8 @@
             url: urlGraph2,
             data: {
                 url_0: "{{ $url_access_chart[0]->_id }}",
-                url_1: "{{ $url_access_chart[1]->_id }}"
+                url_1: "{{ $url_access_chart[1]->_id }}",
+                user: {{ $user->user_id ?? "null" }}
             },
             success: function(response) {
                 const apexChart = "#chart-url";
