@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->dateWeekAgo = Carbon::now()->subRealWeeks(10)->format('Y-m-d H:i:s');
+        $this->dateWeekAgo = Carbon::now()->subRealWeeks(1)->format('Y-m-d H:i:s');
     }
 
     public function index(User $user)
