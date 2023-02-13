@@ -18,6 +18,7 @@ class SettingsController extends Controller
 {
     private $urlApi = 'https://mytalent.ioh.co.id/api';
     private $limitation = 5000;
+    private $waitSyncAfterHour = 3;
 
     public function index() {
         $settings = Setting::first();
@@ -35,6 +36,23 @@ class SettingsController extends Controller
         $settings = Setting::first();
         if(!$settings) {
             return response()->json(['message' => 'Account Not Setting Yet.']);
+        }
+
+        $count_retry = isset($settings->sync_try) ? count($settings->sync_try)+1 : 1;
+        if($count_retry > 10) {
+            if($settings->enable_schedule_api == 'on') {
+                $settings->enable_schedule_api = 'off';
+                $settings->enable_schedule_api_by = 'auto';
+                $settings->save();
+            }
+            $last_sync_try = $settings->sync_try[$count_retry-2];
+            $different_hours = Carbon::now()->diffInHours($last_sync_try['retry_date']->toDateTime()->format('Y-m-d H:i:s'));
+            if($different_hours >= $this->waitSyncAfterHour && $settings->enable_schedule_api_by == 'auto') { // if 3 hours elapse then turn on again scheduler
+                $settings->sync_try = [];
+                $settings->enable_schedule_api = 'on';
+                $settings->save();
+            }
+            return response()->json(['message' => 'Syncronize temporary disabled, becuase too many attempt sync. Wait until 3 hours again, or save this settings for force sync.'], 402);
         }
 
         $last_date_data = '1970-01-01 00:00:00';
@@ -82,7 +100,13 @@ class SettingsController extends Controller
         });
 
         if($response->count() == 0) {
-            return response('', 402)->json(['message' => 'Log Not Found']);
+            if(!isset($settings->sync_try)) {
+                $settings->sync_try = [];
+            }
+            $array_try = array_merge($settings->sync_try, [[ 'retry' => $count_retry, 'retry_date' => $this->date_bson(now())]]);
+            $settings->sync_try = $array_try;
+            $settings->save();
+            return response()->json(['message' => 'Log Not Found'], 402);
         }
 
         Log::insert($response->toArray());
@@ -113,6 +137,8 @@ class SettingsController extends Controller
 
         $get_settings->token_api = $this->get_token($get_settings);
         $get_settings->enable_schedule_api = $request->_schedule_api_on;
+        $get_settings->enable_schedule_api_by = 'user';
+        $get_settings->sync_try = [];
 
         $get_settings->url_log = $request->_url_log;
         $get_settings->url_employee = $request->_url_emp;
