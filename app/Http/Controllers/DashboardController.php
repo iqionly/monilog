@@ -31,7 +31,7 @@ class DashboardController extends Controller
             // ['$sort' => ['total' => -1]],
             // ['$limit' => 5],
             ['$match' => [ 
-                // 'created_at' => ['$gte' => $date], 
+                'created_at' => ['$gte' => $date], 
                 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]
             ]
         ];
