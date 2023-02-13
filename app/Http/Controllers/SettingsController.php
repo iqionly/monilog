@@ -17,18 +17,20 @@ use MongoDB\BSON\UTCDateTime as DateTimeBSON;
 class SettingsController extends Controller
 {
     private $urlApi = 'https://mytalent.ioh.co.id/api';
-    private $limitation = 20000;
+    private $limitation = 5000;
 
     public function index() {
         $settings = Setting::first();
         return view('settings.index', [ 'settings' => $settings ]);
     }
 
-    public function sync(Request $request) {
-        $validation = $request->validate([
-            '_start_date' => 'required|date',
-            '_end_date' => 'required|date|different:_start_date'
-        ]);
+    public function sync(Request $request = null) {
+        if($request) {
+            $validation = $request->validate([
+                '_start_date' => 'required|date',
+                '_end_date' => 'required|date|different:_start_date'
+            ]);
+        }
 
         $settings = Setting::first();
         if(!$settings) {
@@ -40,14 +42,23 @@ class SettingsController extends Controller
             $last_date_data = Log::latest()->value('created_at')->format('Y-m-d H:i:s');
         }
         
+        if($request) {
+            $dataLog = [
+                'action' => 'sync log success from '. $last_date_data . ', with ' . $this->limitation,
+                'ip address'    => $request->ip() ?? 'command',
+                'url_access'    => $request->url() ?? 'command',
+                'url_api'       => $settings->url_log
+            ];
+        } else {
+            $dataLog = [
+                'action' => 'sync log success from '. $last_date_data . ', with ' . $this->limitation,
+                'from_scheduler'    => 'command',
+                'url_api'       => $settings->url_log
+            ];
+        }
         HistoryLogSync::firstOrCreate([
             'params' => $last_date_data
-        ], [
-            'action' => 'sync log success from '. $last_date_data . ', with ' . $this->limitation,
-            'ip address'    => $request->ip(),
-            'url_access'    => $request->url(),
-            'url_api'       => $settings->url_log
-        ]);
+        ], $dataLog);
 
         $response = response()->json(['message' => 'Cannot Request Same Data']);
 
