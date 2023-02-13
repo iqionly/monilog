@@ -107,6 +107,9 @@ class SettingsController extends Controller
             $settings->sync_try = $array_try;
             $settings->save();
             return response()->json(['message' => 'Log Not Found'], 402);
+        } else if(count($settings->sync_try) > 0) {
+            $settings->sync_try = [];
+            $settings->save();
         }
 
         Log::insert($response->toArray());
