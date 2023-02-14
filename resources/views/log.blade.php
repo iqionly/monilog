@@ -181,6 +181,7 @@
 <script>
     const urlLogDataTable = "{{ route('dashboard.log-data') }}"
     const urlGraph2 = "{{ route('dashboard.graph-2') }}";
+    const urlGraph3 = "{{ route('dashboard.graph-3') }}";
     $('#pills-tab button').on('click', function(e) {
         e.preventDefault()
         $(this).tab('show')
@@ -372,39 +373,44 @@
     }
 
     var _demo1 = function() {
-        const apexChart = "#chart-access";
-        var options = {
-            series: [{
-                name: "Desktops"
-                , data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-            }]
-            , chart: {
-                height: 350
-                , type: 'line'
-                , zoom: {
-                    enabled: false
-                }
-            }
-            , dataLabels: {
-                enabled: false
-            }
-            , stroke: {
-                curve: 'straight'
-            }
-            , grid: {
-                row: {
-                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                    opacity: 0.5
-                }
-            , }
-            , xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
-            , }
-            , colors: [primary]
-        };
+        $.ajax({
+            url: urlGraph3,
+            success: function(response) {
+                const apexChart = "#chart-access";
+                var options = {
+                    series: [{
+                        name: "Desktops"
+                        , data: response.datas
+                    }]
+                    , chart: {
+                        height: 350
+                        , type: 'line'
+                        , zoom: {
+                            enabled: false
+                        }
+                    }
+                    , dataLabels: {
+                        enabled: false
+                    }
+                    , stroke: {
+                        curve: 'straight'
+                    }
+                    , grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.5
+                        }
+                    , }
+                    , xaxis: {
+                        categories: response.dates
+                    , }
+                    , colors: [primary]
+                };
 
-        var chart = new ApexCharts(document.querySelector(apexChart), options);
-        chart.render();
+                var chart = new ApexCharts(document.querySelector(apexChart), options);
+                chart.render();
+            }
+        });
     }
 
     _demo1();

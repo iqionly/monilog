@@ -119,11 +119,12 @@ class DashboardController extends Controller
                         $request->url_1
                     ]
                 ],
-                'created_at' => [ '$gte' => new UTCDateTime(new DateTime($this->dateWeekAgo))]
             ];
 
             if($request->user != null) {
                 $match['user_id'] = (int) $request->user;
+            } else {
+                $match['created_at'] = [ '$gte' => new UTCDateTime(new DateTime($this->dateWeekAgo))];
             }
 
             return $collection->aggregate([
@@ -211,5 +212,17 @@ class DashboardController extends Controller
             return [ 'names' => ['url top 2', 'url top 1'], $result_1, $result_2, $dates];
         }
 
+    }
+
+    public function graph_access() {
+        $date = Carbon::now()->subMonths(1)->format('Y-m-d');
+        $data = Log::raw(function($collection) use ($date) {
+            return $collection->aggregate([['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1]]]);
+        });
+        $graph_date = $data->pluck('_id')->map(function($row) {
+            return $row->year . '-' . $row->month;
+        });
+        $graph_data = $data->pluck('count');
+        return response()->json(['dates' => $graph_date, 'datas' => $graph_data]);
     }
 }

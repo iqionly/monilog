@@ -42,7 +42,7 @@ class synclog extends Command
         $settings = new SettingsController();
         $settingsOption = Setting::first();
 
-        if($settingsOption && $settingsOption->enable_schedule_api == 'on') {
+        if($settingsOption && ($settingsOption->enable_schedule_api == 'on' || ($settingsOption->enable_schedule_api_by == 'auto' && $settingsOption->enable_schedule_api == 'off'))) {
             $settings->sync();
         }
     }

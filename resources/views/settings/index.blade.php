@@ -229,6 +229,15 @@
                                                 <span></span>
                                             </label>
                                         </span>
+                                        @php
+                                            if($settings && isset($settings->sync_try)) {
+                                                $dates = ($settings->sync_try[count($settings->sync_try)-1]['retry_date'])->toDateTime()->format('Y-m-d H:i:s');
+                                            } else {
+                                                $dates = "N/A";
+                                            }
+                                        @endphp 
+                                            
+                                        <span class="form-text text-muted">This will disable if schedule not retrieve any document 10 times. Don't worry, this will on in {{ $dates }}</span>
                                     </div>
                                 </div>
                                 <div class="separator separator-dashed my-10"></div>
