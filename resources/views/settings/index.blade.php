@@ -591,7 +591,7 @@
         var time = $('#time');
 
         function clock() {
-            var date = new Date().toUTCString();
+            var date = new Date().toUTCString().replace('GMT', 'UTC');
             time.html(date);
         }
 
