@@ -340,6 +340,12 @@
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Clock Server</label>
+                                    <div class="col-lg-9 col-xl-6 d-flex">
+                                        <span class="align-self-center text-muted" id="time"></span>
+                                    </div>
+                                </div>
                                 <div class="form-group row align-items-center">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Enable Schedule API</label>
                                     <div class="col-lg-9 col-xl-6">
@@ -581,6 +587,15 @@
 
     jQuery(document).ready(function() {
         KTProfile.init();
+
+        var time = $('#time');
+
+        function clock() {
+            var date = new Date().toUTCString();
+            time.html(date);
+        }
+
+        setInterval(clock, 1000);
     });
 
 </script>
