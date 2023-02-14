@@ -13,29 +13,29 @@
 <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
     <div class="content flex-row-fluid" id="kt_content">
         <div class="d-flex justify-content-center mb-5">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: -25px;">
-                <li class="nav-item" role="presentation">
+            <ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist" style="margin-top: -25px;">
+                <li class="nav-item m-2" role="presentation">
                     <button class="nav-link text-white btn btn-primary active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
                         <i class='bx bxs-category-alt bx-sm me-2'></i>
                         <span class="fw-bold">Overview</span>
                     </button>
                 </li>
 
-                <li class="nav-item" role="presentation">
+                <li class="nav-item m-2" role="presentation">
                     <button class="nav-link text-white btn btn-primary" id="analytic-table-tab" data-toggle="pill" data-target="#analytic-table" type="button" role="tab" aria-controls="analytic-table" aria-selected="false">
                         <i class='bx bxs-bar-chart-alt-2 bx-sm me-2'></i>
                         <span class="fw-bold">Analytic Table</span>
                     </button>
                 </li>
 
-                <li class="nav-item" role="presentation">
+                <li class="nav-item m-2" role="presentation">
                     <button class="nav-link text-white btn btn-primary" id="log-data-tab" data-toggle="pill" data-target="#log-data" type="button" role="tab" aria-controls="log-data" aria-selected="false">
                         <i class='bx bx-library bx-sm me-2'></i>
                         <span class="fw-bold">Log Data</span>
                     </button>
                 </li>
 
-                <li class="nav-item" role="presentation">
+                <li class="nav-item m-2" role="presentation">
                     <button class="nav-link text-white btn btn-primary" id="user-data-tab" data-toggle="pill" data-target="#user-data" type="button" role="tab" aria-controls="luser-data" aria-selected="false">
                         <i class='bx bx-library bx-sm me-2'></i>
                         <span class="fw-bold">Users Data</span>
@@ -51,7 +51,19 @@
 
 
             <div class="tab-pane fade" id="analytic-table" role="tabpanel" aria-labelledby="analytic-table-tab" tabindex="0">
-                @includeWhen(!empty($user->user_id), 'partials.analytic')
+                @if(!empty($user->user_id))
+                    @include('partials.analytic')
+                @else
+                    <div class="row g-5 g-xl-8">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body d-flex justify-content-center">
+                                    <span>Please Select 1 User in Log Data or User Data Tab, with clicking their UserID</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="tab-pane fade" id="log-data" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">

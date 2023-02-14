@@ -1,5 +1,5 @@
 <!--begin::Row-->
-<div class="row g-5 g-xl-8">
+<div class="row g-5 g-xl-8 g-2">
     <div class="col-lg-6">
         <div class="card card-custom card-stretch gutter-b">
             <!--begin::Header-->
@@ -91,7 +91,7 @@
                     <!--end::Symbol-->
 
                     <!--begin::Text-->
-                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                    <div class="d-flex flex-column w-100 text-wrap flex-grow-1 mr-2">
                         <a href="{{ $value->id }}" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1" alt="{{ $value->id }}">{{ strlen($value->_id) > 50 ? substr($value->_id,0,50)."..." : $value->_id; }}</a>
                         <span class="text-muted font-weight-bold">{{ count($value->list_users) > 1 ? count($value->list_users) . ' User Accessed' : $user->full_name ?? 'N/A' }} </span>
                     </div>

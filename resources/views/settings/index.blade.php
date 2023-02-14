@@ -3,6 +3,126 @@
 @section('content')
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid mt-10" id="kt_content">
+    <div class="subheader py-2 py-lg-12  subheader-transparent " id="kt_subheader">
+        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Mobile Toggle-->
+                <button class="burger-icon burger-icon-left mr-4 d-inline-block d-lg-none" id="kt_subheader_mobile_toggle">
+                    <span></span>
+                </button>
+                <!--end::Mobile Toggle-->
+
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Title-->
+                    <h2 class="text-white font-weight-bold my-2 mr-5">
+                        Settings Monilog </h2>
+                    <!--end::Title-->
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="#" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">
+                            Monilog </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">
+                            Settings </a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+
+            </div>
+            <!--end::Info-->
+
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+
+
+                <!--begin::Button-->
+                <a href="#" class="btn btn-transparent-white font-weight-bold  py-3 px-6 mr-2">
+                    Reports
+                </a>
+                <!--end::Button-->
+
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="" data-placement="top" data-original-title="Quick actions">
+                    <a href="#" class="btn btn-white font-weight-bold py-3 px-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </a>
+                    <div class="dropdown-menu p-0 m-0 dropdown-menu-md dropdown-menu-right">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover py-5">
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-drop"></i></span>
+                                    <span class="navi-text">New Group</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-list-3"></i></span>
+                                    <span class="navi-text">Contacts</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-rocket-1"></i></span>
+                                    <span class="navi-text">Groups</span>
+                                    <span class="navi-link-badge">
+                                        <span class="label label-light-primary label-inline font-weight-bold">new</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
+                                    <span class="navi-text">Calls</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-gear"></i></span>
+                                    <span class="navi-text">Settings</span>
+                                </a>
+                            </li>
+
+                            <li class="navi-separator my-3"></li>
+
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-magnifier-tool"></i></span>
+                                    <span class="navi-text">Help</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
+                                    <span class="navi-text">Privacy</span>
+                                    <span class="navi-link-badge">
+                                        <span class="label label-light-danger label-rounded font-weight-bold">5</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+                <!--end::Dropdown-->
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
@@ -10,7 +130,7 @@
             <!--begin::Profile Email Settings-->
             <div class="d-flex flex-row">
                 <!--begin::Aside-->
-                <div class="flex-row-auto w-250px w-xxl-350px" id="kt_profile_aside">
+                <div class="flex-row-auto offcanvas-mobile w-250px w-xxl-350px" id="kt_profile_aside">
                     <!--begin::Profile Card-->
                     <div class="card card-custom card-stretch">
                         <!--begin::Body-->
@@ -190,7 +310,7 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Email</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input name="_email" type="email" class="form-control"  placeholder="Enter Email" value="{{ $settings->email ?? null }}"/>
+                                        <input name="_email" type="email" class="form-control" placeholder="Enter Email" value="{{ $settings->email ?? null }}" />
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
                                     </div>
                                 </div>
@@ -198,7 +318,7 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Password</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <div class="input-icon input-icon-right">
-                                            <input name="_password" type="password" class="form-control"  placeholder="Enter Password" value="{{ $settings->password ?? null }}"/>
+                                            <input name="_password" type="password" class="form-control" placeholder="Enter Password" value="{{ $settings->password ?? null }}" />
                                             <span><i class="icon-md text-dark-50 ki ki-hide ki-eye" id="togglePassword"></i></span>
                                         </div>
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
@@ -216,7 +336,7 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">API Token</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input name="_bt" type="text" class="form-control" value="{{ $settings->token_api ?? null }}" placeholder="Enter Bearer Token Manual" disabled/>
+                                        <input name="_bt" type="text" class="form-control" value="{{ $settings->token_api ?? null }}" placeholder="Enter Bearer Token Manual" disabled />
                                         <span class="form-text text-muted">Do not share this token to anyone.</span>
                                     </div>
                                 </div>
@@ -230,19 +350,16 @@
                                             </label>
                                         </span>
                                         @php
-                                            if($settings && isset($settings->sync_try)) {
-                                                $end = count($settings->sync_try)-1;
-                                                if($end < 0) {
-                                                    $dates = "N/A";
-                                                } else {
-                                                    $dates = ($settings->sync_try[$end]['retry_date'])->toDateTime()->format('Y-m-d H:i:s');
-                                                }
-                                            } else {
-                                                $dates = "N/A";
+                                        if($settings && isset($settings->sync_try)) {
+                                        $end = count($settings->sync_try)-1;
+                                        if($end < 0) { $dates="N/A" ; } else { $dates=($settings->sync_try[$end]['retry_date'])->toDateTime()->format('Y-m-d H:i:s');
                                             }
-                                        @endphp 
-                                            
-                                        <span class="form-text text-muted">This will disable if schedule not retrieve any document 10 times. Don't worry, this will on in {{ $dates }}</span>
+                                            } else {
+                                            $dates = "N/A";
+                                            }
+                                            @endphp
+
+                                            <span class="form-text text-muted">This will disable if schedule not retrieve any document 10 times. Don't worry, this will on in {{ $dates }}</span>
                                     </div>
                                 </div>
                                 <div class="separator separator-dashed my-10"></div>
@@ -255,14 +372,14 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">API URL</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input name="_url_api" type="text" class="form-control" value="{{ $settings->url_api ?? 'https://mytalent.ioh.co.id/api' }}" placeholder="Enter API URL MyTalent"/>
+                                        <input name="_url_api" type="text" class="form-control" value="{{ $settings->url_api ?? 'https://mytalent.ioh.co.id/api' }}" placeholder="Enter API URL MyTalent" />
                                         <span class="form-text text-danger">Required Field</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Log URL</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input name="_url_log" type="text" class="form-control" value="{{ $settings->url_log ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter Log URL"/>
+                                        <input name="_url_log" type="text" class="form-control" value="{{ $settings->url_log ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter Log URL" />
                                         <span class="form-text text-danger">Required Field</span>
                                     </div>
                                 </div>
@@ -270,7 +387,7 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Employee URL</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <div class="input-group">
-                                            <input name="_url_emp" type="text" class="form-control" value="{{ $settings->url_employee ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter Employee URL"/>
+                                            <input name="_url_emp" type="text" class="form-control" value="{{ $settings->url_employee ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter Employee URL" />
                                             <div class="input-group-append">
                                                 <button type="button" class="btn btn-info btn-sync-employee">Sync Now</button>
                                             </div>
@@ -282,7 +399,7 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">User URL</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <div class="input-group">
-                                            <input name="_url_usr" type="text" class="form-control" value="{{ $settings->url_user ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter User URL"/>
+                                            <input name="_url_usr" type="text" class="form-control" value="{{ $settings->url_user ?? 'https://mytalent.ioh.co.id/' }}" placeholder="Enter User URL" />
                                             <div class="input-group-append">
                                                 <button type="button" class="btn btn-info btn-sync-user">Sync Now</button>
                                             </div>
@@ -354,60 +471,113 @@
 
 @section('scripts')
 <script>
-const urlSync = "{{ route('settings.sync') }}";
-const urlSyncEmp = "{{ route('settings.sync-employee') }}";
-const urlSyncUsr = "{{ route('settings.sync-user') }}";
+    const urlSync = "{{ route('settings.sync') }}";
+    const urlSyncEmp = "{{ route('settings.sync-employee') }}";
+    const urlSyncUsr = "{{ route('settings.sync-user') }}";
 
-$('.btn-sync').click(function(){
-    KTApp.block('body');
-    $.ajax({
-        url: urlSync,
-        method: 'post',
-        data: {
-            '_start_date': '2023-02-06',
-            '_end_date': '2023-02-07'
-        },
-        success: () => { KTApp.unblock('body') },
-        error: function (response) {
-            Swal.fire({ title: response.responseJSON.message })
-        },
-        complete: () => { KTApp.unblock('body') }
+    $('.btn-sync').click(function() {
+        KTApp.block('body');
+        $.ajax({
+            url: urlSync
+            , method: 'post'
+            , data: {
+                '_start_date': '2023-02-06'
+                , '_end_date': '2023-02-07'
+            }
+            , success: () => {
+                KTApp.unblock('body')
+            }
+            , error: function(response) {
+                Swal.fire({
+                    title: response.responseJSON.message
+                })
+            }
+            , complete: () => {
+                KTApp.unblock('body')
+            }
+        });
     });
-});
-$('.btn-sync-employee').click(function(){
-    KTApp.block('body');
-    $.ajax({
-        url: urlSyncEmp,
-        method: 'post',
-        success: () => { KTApp.unblock('body') },
-        error: function (response) {
-            Swal.fire({ title: response.responseJSON.message })
-        },
-        complete: () => { KTApp.unblock('body') }
+    $('.btn-sync-employee').click(function() {
+        KTApp.block('body');
+        $.ajax({
+            url: urlSyncEmp
+            , method: 'post'
+            , success: () => {
+                KTApp.unblock('body')
+            }
+            , error: function(response) {
+                Swal.fire({
+                    title: response.responseJSON.message
+                })
+            }
+            , complete: () => {
+                KTApp.unblock('body')
+            }
+        });
     });
-});
-$('.btn-sync-user').click(function(){
-    KTApp.block('body');
-    $.ajax({
-        url: urlSyncUsr,
-        success: () => { KTApp.unblock('body') },
-        error: function (response) {
-            Swal.fire({ title: response.responseJSON.message })
-        },
-        complete: () => { KTApp.unblock('body') }
+    $('.btn-sync-user').click(function() {
+        KTApp.block('body');
+        $.ajax({
+            url: urlSyncUsr
+            , success: () => {
+                KTApp.unblock('body')
+            }
+            , error: function(response) {
+                Swal.fire({
+                    title: response.responseJSON.message
+                })
+            }
+            , complete: () => {
+                KTApp.unblock('body')
+            }
+        });
     });
-});
-$('#togglePassword').click(function() {
-    // Toggle the type attribute using
-    // getAttribure() method
-    const type = $('[name="_password"]')
-        .attr('type') === 'password' ?
-        'text' : 'password';
-            
-    $('[name="_password"]').attr('type', type);
+    $('#togglePassword').click(function() {
+        // Toggle the type attribute using
+        // getAttribure() method
+        const type = $('[name="_password"]')
+            .attr('type') === 'password' ?
+            'text' : 'password';
 
-    // Toggle the eye and bi-eye icon
-    this.classList.toggle('ki-eye');
-})
+        $('[name="_password"]').attr('type', type);
+
+        // Toggle the eye and bi-eye icon
+        this.classList.toggle('ki-eye');
+    })
+
+    // Class definition
+    var KTProfile = function() {
+        // Elements
+        var avatar;
+        var offcanvas;
+
+        // Private functions
+        var _initAside = function() {
+            // Mobile offcanvas for mobile mode
+            offcanvas = new KTOffcanvas('kt_profile_aside', {
+                overlay: true
+                , baseClass: 'offcanvas-mobile',
+                //closeBy: 'kt_user_profile_aside_close',
+                toggleBy: 'kt_subheader_mobile_toggle'
+            });
+        }
+
+        var _initForm = function() {
+            avatar = new KTImageInput('kt_profile_avatar');
+        }
+
+        return {
+            // public functions
+            init: function() {
+                _initAside();
+                _initForm();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        KTProfile.init();
+    });
+
 </script>
 @endsection
