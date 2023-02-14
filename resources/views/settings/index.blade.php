@@ -231,7 +231,8 @@
                                         </span>
                                         @php
                                             if($settings && isset($settings->sync_try)) {
-                                                $dates = ($settings->sync_try[count($settings->sync_try)-1]['retry_date'])->toDateTime()->format('Y-m-d H:i:s');
+                                                $end = count($settings->sync_try)-1 < 0 ? 0 : count($settings->sync_try)-1;
+                                                $dates = ($settings->sync_try[$end]['retry_date'])->toDateTime()->format('Y-m-d H:i:s');
                                             } else {
                                                 $dates = "N/A";
                                             }
