@@ -351,15 +351,19 @@
                                         </span>
                                         @php
                                         if($settings && isset($settings->sync_try)) {
-                                        $end = count($settings->sync_try)-1;
-                                        if($end < 0) { $dates="N/A" ; } else { $dates=($settings->sync_try[$end]['retry_date'])->toDateTime()->format('Y-m-d H:i:s');
+                                            $end = count($settings->sync_try)-1;
+                                            if($end < 0) { 
+                                                $dates="N/A" ; 
+                                            } else { 
+                                                $carbon = \Carbon\Carbon::parse($settings->sync_try[$end]['retry_date']->toDateTime()->format('Y-m-d H:i:s'));
+                                                $dates = $carbon->addHours(3)->format('Y-m-d H:i:s');
                                             }
-                                            } else {
+                                        } else {
                                             $dates = "N/A";
-                                            }
-                                            @endphp
+                                        }
+                                        @endphp
 
-                                            <span class="form-text text-muted">This will disable if schedule not retrieve any document 10 times. Don't worry, this will on in {{ $dates }}</span>
+                                            <span class="form-text text-muted">This will disable if schedule not retrieve any document 10 times. Don't worry, this will on in {{ $dates }}, Timezone: {{ Config::get('app.timezone')}}</span>
                                     </div>
                                 </div>
                                 <div class="separator separator-dashed my-10"></div>

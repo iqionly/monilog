@@ -46,7 +46,8 @@ class SettingsController extends Controller
                 $settings->save();
             }
             $last_sync_try = $settings->sync_try[$count_retry-2];
-            $different_hours = Carbon::now()->diffInHours($last_sync_try['retry_date']->toDateTime()->format('Y-m-d H:i:s'));
+            $different_hours = Carbon::now()->diffInHours($last_sync_try['retry_date']->toDateTime());
+            // dd($different_hours, Carbon::now()->format('Y-m-d H:i:s'), $last_sync_try['retry_date']->toDateTime()->format('Y-m-d H:i:s'));
             if($different_hours >= $this->waitSyncAfterHour && $settings->enable_schedule_api_by == 'auto') { // if 3 hours elapse then turn on again scheduler
                 $settings->sync_try = [];
                 $settings->enable_schedule_api = 'on';
