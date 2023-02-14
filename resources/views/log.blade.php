@@ -266,7 +266,7 @@
     $('#user-table').DataTable({});
 
     var _demo2 = function() {
-        if({{ !isset($url_access_chart[0]) || !isset($url_access_chart[1]) }}) {
+        if($('[data-popular]').length === 0) {
             return false;
         }
         $.ajax({

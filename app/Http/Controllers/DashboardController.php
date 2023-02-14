@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use MongoDB\BSON\Regex;
+use MongoDB\BSON\UTCDateTime;
 use MongoDB\Model\BSONArray;
 
 class DashboardController extends Controller
@@ -31,7 +33,7 @@ class DashboardController extends Controller
             // ['$sort' => ['total' => -1]],
             // ['$limit' => 5],
             ['$match' => [ 
-                'created_at' => ['$gte' => $date], 
+                'created_at' => ['$gte' => new UTCDateTime(new DateTime($date))], 
                 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]
             ]
         ];
@@ -148,7 +150,7 @@ class DashboardController extends Controller
                     'from' => ['$dateFromParts' => ['year' => '$_id.year', 'month' => '$_id.month', 'day' => '$_id.interval']],
                     'to' => ['$dateFromParts' => ['year' => '$_id.year', 'month' => '$_id.month', 'day' => ['$add' => ['$_id.interval', 10]]]]]
                 ],
-                ['$sort' => ['from' => -1, 'url_access' => -1]],
+                ['$sort' => ['from' => -1, 'url_access' => -1, 'count' => -1]],
                 ['$group' => ['_id' => '$url_access', 'statistics' => [
                     '$push' => ['count' => '$count', 'from' => ['$dateToString' => ['date' => '$from', 'format' => '%Y-%m-%d %H:%M:%S']]]]
                 ]],
@@ -203,6 +205,11 @@ class DashboardController extends Controller
             } 
         }
 
-        return [ 'names' => ['url top 1', 'url top 2'], $result_1, $result_2, $dates];
+        if($data_1->sum() > $data_3->sum()){
+            return [ 'names' => ['url top 1', 'url top 2'], $result_1, $result_2, $dates];
+        } else {
+            return [ 'names' => ['url top 2', 'url top 1'], $result_1, $result_2, $dates];
+        }
+
     }
 }

@@ -81,7 +81,7 @@
                 @endphp
                 @foreach($url_access_chart as $key => $value)
                 <!--begin::Item-->
-                <div class="d-flex align-items-center flex-wrap mb-8">
+                <div class="d-flex align-items-center flex-wrap mb-8" data-popular="{{$key}}">
                     <!--begin::Symbol-->
                     <div class="symbol symbol-50 symbol-light mr-5">
                         <span class="symbol-label">
