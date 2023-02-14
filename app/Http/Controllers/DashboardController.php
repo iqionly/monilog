@@ -215,12 +215,12 @@ class DashboardController extends Controller
     }
 
     public function graph_access() {
-        $date = Carbon::now()->subMonths(1)->format('Y-m-d');
+        $date = Carbon::now()->subWeeks(1)->format('Y-m-d');
         $data = Log::raw(function($collection) use ($date) {
-            return $collection->aggregate([['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1]]]);
+            return $collection->aggregate([['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]]);
         });
         $graph_date = $data->pluck('_id')->map(function($row) {
-            return $row->year . '-' . $row->month;
+            return $row->year . '-' . $row->month . '-' . $row->day;
         });
         $graph_data = $data->pluck('count');
         return response()->json(['dates' => $graph_date, 'datas' => $graph_data]);
