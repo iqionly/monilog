@@ -18,7 +18,7 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->dateWeekAgo = Carbon::now()->subRealWeeks(1)->format('Y-m-d H:i:s');
+        $this->dateWeekAgo = Carbon::now()->subRealWeeks(1)->format('Y-m-d');
     }
 
     public function index(User $user)
@@ -26,7 +26,6 @@ class DashboardController extends Controller
         // dd($user->logs);
         // dd($user_id);
         $date = $this->dateWeekAgo;
-
         $logQuery = [
             // ['$match' => [ 'created_at' => ['$gte' => $date], 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]],
             // ['$group' => ['_id' => '$url_access', 'total' => ['$sum' => 1]]],
@@ -119,7 +118,8 @@ class DashboardController extends Controller
                         $request->url_0,
                         $request->url_1
                     ]
-                ]
+                ],
+                'created_at' => [ '$gte' => new UTCDateTime(new DateTime($this->dateWeekAgo))]
             ];
 
             if($request->user != null) {
