@@ -328,7 +328,7 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">Amount Weeks in Dashboard</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <input name="_get_weeks" type="number" class="form-control" placeholder="Enter Weeks in number" value="{{ $settings->get_weeks ?? null }}" />
-                                        <span class="form-text text-muted">Do not share this token to anyone.</span>
+                                        <span class="form-text text-muted">Change if you want how many weeks to diplay. If you want all type 0 values.</span>
                                     </div>
                                 </div>
                                 <div class="separator separator-dashed my-10"></div>
