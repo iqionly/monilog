@@ -422,6 +422,28 @@
                                         <span class="form-text text-danger">Required Field</span>
                                     </div>
                                 </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h5 class="font-weight-bold mb-6">Log Sync Retry:</h5>
+                                    </div>
+                                </div>
+                                @forelse($settings->sync_try as $key => $value)
+                                <div class="form-group row mb-1">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-danger text-left text-lg-right p-0">Retry: {{ $value['retry'] }}</label>
+                                    <div class="col-lg-9 col-xl-6 d-flex">
+                                        <span class="align-self-center">Date Executed: {{ $value['retry_date']->toDateTime()->format('Y-m-d H:i:s') }} UTC</span>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right"></label>
+                                    <div class="col-lg-9 col-xl-6 d-flex">
+                                        <span class="align-self-center text-muted">--Not Have Any Retry Log--</span>
+                                    </div>
+                                </div>
+                                @endforelse
                                 {{-- <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">When To Escalate Emails</label>
                                     <div class="col-lg-9 col-xl-6">
