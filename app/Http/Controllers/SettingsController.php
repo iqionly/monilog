@@ -142,6 +142,7 @@ class SettingsController extends Controller
         $get_settings->token_api = $this->get_token($get_settings);
         $get_settings->enable_schedule_api = $request->_schedule_api_on;
         $get_settings->enable_schedule_api_by = 'user';
+        $get_settings->get_weeks = $request->_get_weeks;
         $get_settings->sync_try = [];
 
         $get_settings->url_log = $request->_url_log;
