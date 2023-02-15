@@ -387,6 +387,9 @@
     var _demo1 = function() {
         $.ajax({
             url: urlGraph3,
+            data: {
+                user: {{ $user->user_id ?? "null" }}
+            },
             success: function(response) {
                 const apexChart = "#chart-access";
                 var options = {

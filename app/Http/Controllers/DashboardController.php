@@ -223,10 +223,16 @@ class DashboardController extends Controller
 
     }
 
-    public function graph_access() {
+    public function graph_access(Request $request) {
         $date = Carbon::now()->subWeeks(1)->format('Y-m-d');
-        $data = Log::raw(function($collection) use ($date) {
-            return $collection->aggregate([['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]]);
+        $query = [
+            ['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], 
+            ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]];
+        if($request->user != null) {
+            $query[0]['$match']['user_id'] = (int) $request->user;
+        }
+        $data = Log::raw(function($collection) use ($query) {
+            return $collection->aggregate($query);
         });
         $graph_date = $data->pluck('_id')->map(function($row) {
             return $row->year . '-' . $row->month . '-' . $row->day;
