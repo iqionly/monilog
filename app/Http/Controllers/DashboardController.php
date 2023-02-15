@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use MongoDB\BSON\Regex;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Model\BSONArray;
@@ -34,38 +35,43 @@ class DashboardController extends Controller
         // dd($user_id);
         $date = $this->dateWeekAgo;
         // dd($date);
-        $logQuery = [
-            // ['$match' => [ 'created_at' => ['$gte' => $date], 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]],
-            // ['$group' => ['_id' => '$url_access', 'total' => ['$sum' => 1]]],
-            // ['$sort' => ['total' => -1]],
-            // ['$limit' => 5],
-            ['$match' => [ 
-                'created_at' => ['$gte' => new UTCDateTime(new DateTime($date))], 
-                'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]
-            ]
-        ];
-
         $log_user = [];
-
-        if(!empty($user->user_id)) {
-            $logQuery[0]['$match'] = [
-                'user_id' => $user->user_id
+        if(!Cache::has('chart_'.(int) $user->user_id)) {
+            $logQuery = [
+                // ['$match' => [ 'created_at' => ['$gte' => $date], 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]],
+                // ['$group' => ['_id' => '$url_access', 'total' => ['$sum' => 1]]],
+                // ['$sort' => ['total' => -1]],
+                // ['$limit' => 5],
+                ['$match' => [ 
+                    'created_at' => ['$gte' => new UTCDateTime(new DateTime($date))], 
+                    'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]
+                ]
             ];
+    
+            if(!empty($user->user_id)) {
+                $logQuery[0]['$match'] = [
+                    'user_id' => $user->user_id
+                ];
+    
+                $log_user = Log::where('user_id', $user->user_id)->orderBy('created_at', 'desc')->get();
+            }
+    
+            $logQuery = array_merge($logQuery, [
+                ['$project' => ['url_access' => '$url_access', 'users_id' => '$user_id', 'date_access' => ['$substr' => ['$created_at', 0, 10]]]],
+                ['$group' => ['_id' => ['url_access' => '$url_access', 'users' => '$users_id'], 'total' => ['$sum' => 1]]],
+                ['$group' => ['_id' => '$_id.url_access', 'list_users' => ['$push' => ['users_id' => '$_id.users', 'count_user' => '$total']], 'total' => ['$sum' => '$total']]],
+                ['$sort' => ['total' => -1]],
+                ['$limit' => 5]
+            ]);
+    
+            $url_access_chart = Log::raw(function($collection) use ($logQuery) {
+                return $collection->aggregate($logQuery);
+            });
 
-            $log_user = Log::where('user_id', $user->user_id)->orderBy('created_at', 'desc')->get();
+            Cache::put('chart_'.(int) $user->user_id, $url_access_chart, 120);
+        } else {
+            $url_access_chart = Cache::get('chart_'.(int) $user->user_id);
         }
-
-        $logQuery = array_merge($logQuery, [
-            ['$project' => ['url_access' => '$url_access', 'users_id' => '$user_id', 'date_access' => ['$substr' => ['$created_at', 0, 10]]]],
-            ['$group' => ['_id' => ['url_access' => '$url_access', 'users' => '$users_id'], 'total' => ['$sum' => 1]]],
-            ['$group' => ['_id' => '$_id.url_access', 'list_users' => ['$push' => ['users_id' => '$_id.users', 'count_user' => '$total']], 'total' => ['$sum' => '$total']]],
-            ['$sort' => ['total' => -1]],
-            ['$limit' => 5]
-        ]);
-
-        $url_access_chart = Log::raw(function($collection) use ($logQuery) {
-            return $collection->aggregate($logQuery);
-        });
 
         $users = User::all();
 
@@ -117,6 +123,9 @@ class DashboardController extends Controller
     }
 
     public function graph_2(Request $request) {
+        if(Cache::has('graph2_'.(int) $request->user)) {
+            return Cache::get('graph2_'.(int) $request->user);
+        }
         $url_access_graph = Log::raw(function($collection) use ($request) {
             $match = [
                 'url_access' => ['$ne' => null],
@@ -216,15 +225,19 @@ class DashboardController extends Controller
         }
 
         if($data_1->sum() > $data_3->sum()){
-            return [ 'names' => ['url top 1', 'url top 2'], $result_1, $result_2, $dates];
+            $result = [ 'names' => ['url top 1', 'url top 2'], $result_1, $result_2, $dates];
         } else {
-            return [ 'names' => ['url top 2', 'url top 1'], $result_1, $result_2, $dates];
+            $result = [ 'names' => ['url top 2', 'url top 1'], $result_1, $result_2, $dates];
         }
-
+        Cache::put('graph2_'.(int) $request->user, $result, 120);
+        return $result;
     }
 
     public function graph_access(Request $request) {
-        $date = Carbon::now()->subWeeks(1)->format('Y-m-d');
+        if(Cache::has('graph3_'.(int) $request->user)) {
+            return Cache::get('graph3_'.(int) $request->user);
+        }
+        $date = $this->dateWeekAgo;
         $query = [
             ['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], 
             ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]];
@@ -238,6 +251,9 @@ class DashboardController extends Controller
             return $row->year . '-' . $row->month . '-' . $row->day;
         });
         $graph_data = $data->pluck('count');
-        return response()->json(['dates' => $graph_date, 'datas' => $graph_data]);
+
+        $result = ['dates' => $graph_date, 'datas' => $graph_data];
+        Cache::put('graph3_'.(int) $request->user, $result, 120);
+        return response()->json($result);
     }
 }
