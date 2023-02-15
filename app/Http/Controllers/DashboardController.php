@@ -21,7 +21,11 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->settings = Setting::first();
-        $this->dateWeekAgo = Carbon::now()->subWeeks((int) $this->settings->get_weeks)->format('Y-m-d');
+        if((int) $this->settings->get_weeks == 0) {
+            $this->dateWeekAgo = Carbon::parse(0)->format('Y-m-d');
+        } else {
+            $this->dateWeekAgo = Carbon::now()->subWeeks()->format('Y-m-d');
+        }
     }
 
     public function index(User $user)
@@ -29,6 +33,7 @@ class DashboardController extends Controller
         // dd($user->logs);
         // dd($user_id);
         $date = $this->dateWeekAgo;
+        // dd($date);
         $logQuery = [
             // ['$match' => [ 'created_at' => ['$gte' => $date], 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]],
             // ['$group' => ['_id' => '$url_access', 'total' => ['$sum' => 1]]],
