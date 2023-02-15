@@ -246,11 +246,6 @@ class SettingsController extends Controller
     }
 
     private function getClient($token = null) {
-        if(env('APP_ENV') == 'production') {
-            return Http::withHeaders(['user-agent' => 'My User agent'])
-            ->retry(3, 500)
-            ->withOptions(['proxy' => 'http://10.10.100.250:8080']);
-        }
         if($token) {
             return Http::withOptions([
                 'verify' => false
