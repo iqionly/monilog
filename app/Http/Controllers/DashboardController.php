@@ -18,7 +18,7 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->dateWeekAgo = Carbon::now()->subRealWeeks(1)->format('Y-m-d');
+        $this->dateWeekAgo = Carbon::now()->subWeeks(1)->format('Y-m-d');
     }
 
     public function index(User $user)
@@ -26,6 +26,7 @@ class DashboardController extends Controller
         // dd($user->logs);
         // dd($user_id);
         $date = $this->dateWeekAgo;
+        // dd($date);
         $logQuery = [
             // ['$match' => [ 'created_at' => ['$gte' => $date], 'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ] ]],
             // ['$group' => ['_id' => '$url_access', 'total' => ['$sum' => 1]]],
@@ -40,7 +41,9 @@ class DashboardController extends Controller
         $log_user = [];
 
         if(!empty($user->user_id)) {
-            $logQuery[0]['$match'] = [
+            $logQuery[0]['$match'] = [ 
+                'created_at' => ['$gte' => new UTCDateTime(new DateTime($date))], 
+                'url_access' => [ '$exists' => true, '$ne' => null, '$ne' => "" ],
                 'user_id' => $user->user_id
             ];
 
@@ -123,9 +126,9 @@ class DashboardController extends Controller
 
             if($request->user != null) {
                 $match['user_id'] = (int) $request->user;
-            } else {
-                $match['created_at'] = [ '$gte' => new UTCDateTime(new DateTime($this->dateWeekAgo))];
             }
+
+            $match['created_at'] = [ '$gte' => new UTCDateTime(new DateTime($this->dateWeekAgo))];
 
             return $collection->aggregate([
                 ['$match' => $match ],
