@@ -123,9 +123,9 @@ class DashboardController extends Controller
     }
 
     public function graph_2(Request $request) {
-        if(Cache::has('graph2_'.(int) $request->user)) {
-            return Cache::get('graph2_'.(int) $request->user);
-        }
+        // if(Cache::has('graph2_'.(int) $request->user)) {
+        //     return Cache::get('graph2_'.(int) $request->user);
+        // }
         $url_access_graph = Log::raw(function($collection) use ($request) {
             $match = [
                 'url_access' => ['$ne' => null],
@@ -192,11 +192,21 @@ class DashboardController extends Controller
 
         // dd(date('Y-m-d H:i:s', strtotime($dates->first())), date('Y-m-d H:i:s', strtotime($dates->last())));
         $different = Carbon::parse($dates->last())->diffInDays($dates->first());
-        for($day = date('Y-m-d H:i:s', strtotime($dates->first())); $day >= date('Y-m-d H:i:s', strtotime($dates->last())); $day = Carbon::parse($day)->subDays(1)->format('Y-m-d H:i:s')) {
-            $data_1[$day] = isset($data_1[$day]) ? $data_1[$day] : 0;
-            $data_3[$day] = isset($data_3[$day]) ? $data_3[$day] : 0;
+        $start_date = $dates->last();
+        if($different > 14) {
+            $start_date = Carbon::parse($dates->first())->subDays(14)->format('Y-m-d H:i:s');
+            // dd($start_date, $dates->first(), $dates->last());
+            $data_1 = $data_1->filter(function($data, $key) use($start_date) {
+                return $key >= $start_date;
+            });
+            $data_3 = $data_3->filter(function($data, $key) use($start_date) {
+                return $key >= $start_date;
+            });
         }
-
+        for($day = date('Y-m-d H:i:s', strtotime($start_date)); $day <= date('Y-m-d H:i:s', strtotime($dates->first())); $day = Carbon::parse($day)->addDays(1)->format('Y-m-d H:i:s')) {
+            $data_1[$day] = isset($data_1[$day]) ? $data_1[$day] : '0';
+            $data_3[$day] = isset($data_3[$day]) ? $data_3[$day] : '0';
+        }
         foreach($dates = array_keys($data_1->sortKeys()->toArray()) as $key => $date) {
             $dates[$key] = substr($date, 0, 10);
         }
@@ -240,7 +250,9 @@ class DashboardController extends Controller
         $date = $this->dateWeekAgo;
         $query = [
             ['$match' => ['created_at' => ['$gte' => new UTCDateTime(new DateTime($date))]]], 
-            ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]], ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]], ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]];
+            ['$addFields' => ['created_at' => ['$dateToParts' => ['date' => '$created_at']]]],
+            ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]],
+            ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]];
         if($request->user != null) {
             $query[0]['$match']['user_id'] = (int) $request->user;
         }
