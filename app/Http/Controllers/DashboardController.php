@@ -123,9 +123,9 @@ class DashboardController extends Controller
     }
 
     public function graph_2(Request $request) {
-        // if(Cache::has('graph2_'.(int) $request->user)) {
-        //     return Cache::get('graph2_'.(int) $request->user);
-        // }
+        if(Cache::has('graph2_'.(int) $request->user)) {
+            return Cache::get('graph2_'.(int) $request->user);
+        }
         $url_access_graph = Log::raw(function($collection) use ($request) {
             $match = [
                 'url_access' => ['$ne' => null],
