@@ -144,7 +144,6 @@ class DashboardController extends Controller
                 $match['created_at'] = [ '$gte' => new UTCDateTime(new DateTime($this->dateWeekAgo))];
             }
 
-
             return $collection->aggregate([
                 ['$match' => $match ],
                 ['$addFields' => [
@@ -188,7 +187,7 @@ class DashboardController extends Controller
         $data_3 = $url_access_graph[1]->statistics->pluck('count', 'from');
         $data_4 = $url_access_graph[1]->statistics->pluck('from');
 
-        $dates = $data_2->merge($data_4, $data_2);
+        $dates = $data_2->merge($data_4, $data_2)->sortDesc();
 
         // dd(date('Y-m-d H:i:s', strtotime($dates->first())), date('Y-m-d H:i:s', strtotime($dates->last())));
         $different = Carbon::parse($dates->last())->diffInDays($dates->first());
