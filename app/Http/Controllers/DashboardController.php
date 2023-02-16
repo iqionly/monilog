@@ -25,7 +25,7 @@ class DashboardController extends Controller
         if((int) $this->settings->get_weeks == 0) {
             $this->dateWeekAgo = Carbon::parse(0)->format('Y-m-d');
         } else {
-            $this->dateWeekAgo = Carbon::now()->subWeeks()->format('Y-m-d');
+            $this->dateWeekAgo = Carbon::now()->subWeeks($this->settings->get_weeks)->format('Y-m-d');
         }
     }
 
