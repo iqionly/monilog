@@ -18,18 +18,18 @@
 
             <div class="card-body d-flex flex-column">
                 <div class="table-responsive">
-                    <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                    <table class="table table-head-custom table-vertical-center" id="log-user">
                         <thead>
                             <tr class="text-left">
                                 <th class="pr-0" style="width: 50px">authors</th>
-                                <th style="min-width: 150px"></th>
                                 <th>access at</th>
-                                <th style="min-width: 150px">company</th>
-                                <th style="min-width: 150px">progress</th>
+                                <th style="min-width: 150px">url_access</th>
+                                <th style="min-width: 150px">data</th>
+                                <th style="min-width: 150px">description</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($log_user as $key => $value)
+                            {{-- @forelse($log_user as $key => $value)
                                 <tr>
                                 <td class="pr-0">
                                     <div class="symbol symbol-50 symbol-light mt-1">
@@ -62,7 +62,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                            @endforelse
+                            @endforelse --}}
                         </tbody>
                     </table>
                 </div>

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/log-data', [DashboardController::class, 'log_datatable'])->name('dashboard.log-data');
+Route::get('/log-user', [DashboardController::class, 'log_user'])->name('dashboard.log-user');
 Route::get('/graph-2-data', [DashboardController::class, 'graph_2'])->name('dashboard.graph-2');
 Route::get('/graph-3-data', [DashboardController::class, 'graph_access'])->name('dashboard.graph-3');
 

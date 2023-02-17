@@ -52,8 +52,6 @@ class DashboardController extends Controller
                 $logQuery[0]['$match'] = [
                     'user_id' => $user->user_id
                 ];
-    
-                $log_user = Log::where('user_id', $user->user_id)->orderBy('created_at', 'desc')->get();
             }
     
             $logQuery = array_merge($logQuery, [
@@ -75,7 +73,49 @@ class DashboardController extends Controller
 
         $users = User::all();
 
-        return view('log', ['url_access_chart' => $url_access_chart, 'user' => $user, 'log_user' => $log_user, 'users' => $users]);
+        return view('log', ['url_access_chart' => $url_access_chart, 'user' => $user, 'users' => $users]);
+    }
+
+    public function log_user(Request $request) {
+        if(empty($request->user_id)) {
+            return [];
+        }
+
+        $log_user = Log::where('user_id', (int) $request->user_id)
+            ->orderBy('created_at', 'desc')
+            ->skip($request->start)
+            ->take($request->length)
+            ->when($keyword = $request->search['value'], function($noquery) use ($keyword) {
+                $noquery->where('url_access', 'like', '%'.$keyword.'%');
+                $noquery->orWhere('user_id', 'like', '%'.$keyword.'%');
+                $noquery->orWhere('data', 'like', '%'.$keyword.'%');
+                $noquery->orWhere('description', 'like', '%'.$keyword.'%');
+                $noquery->orWhere('created_at', 'like', '%'.$keyword.'%');
+                $noquery->orWhere('updated_at', 'like', '%'.$keyword.'%');
+                $noquery->orWhere('log_mytalent_id', 'like', '%'.$keyword.'%');
+            })
+            ->get();
+
+        $total_recods = Log::where('user_id', (int) $request->user_id )->count();
+
+        $filtered_records = Log::where('user_id', (int) $request->user_id)
+        ->when($keyword = $request->search['value'], function($noquery) use ($keyword) {
+            $noquery->where('url_access', 'like', '%'.$keyword.'%');
+            $noquery->orWhere('user_id', 'like', '%'.$keyword.'%');
+            $noquery->orWhere('data', 'like', '%'.$keyword.'%');
+            $noquery->orWhere('description', 'like', '%'.$keyword.'%');
+            $noquery->orWhere('created_at', 'like', '%'.$keyword.'%');
+            $noquery->orWhere('updated_at', 'like', '%'.$keyword.'%');
+            $noquery->orWhere('log_mytalent_id', 'like', '%'.$keyword.'%');
+        })
+        ->count();
+
+        return [
+            'data' => $log_user,
+            'draw' => $request->draw,
+            'recordsFiltered' => $filtered_records,
+            'recordsTotal' => $total_recods
+        ];
     }
 
     public function log_datatable(Request $request)

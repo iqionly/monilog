@@ -192,6 +192,7 @@
 <script src="assets/js/pages/features/charts/apexcharts.js"></script>
 <script>
     const urlLogDataTable = "{{ route('dashboard.log-data') }}"
+    const urlLogUser = "{{ route('dashboard.log-user') }}"
     const urlGraph2 = "{{ route('dashboard.graph-2') }}";
     const urlGraph3 = "{{ route('dashboard.graph-3') }}";
     $('#pills-tab button').on('click', function(e) {
@@ -236,6 +237,40 @@
             }
         ]
     });
+
+    table_user = $('#log-user').DataTable({
+         processing: true
+        , serverSide: true
+        , searchDelay: 1200
+        , ajax: {
+            url: urlLogUser,
+            data: {
+                user_id: {{ $user->user_id ?? 'null' }}
+            }
+        }
+        , columns: [{
+                data: 'user_id'
+                , name: 'user_id'
+            }
+            , {
+                data: 'created_at'
+                , name: 'created_at'
+            }
+            , {
+                data: 'url_access'
+                , name: 'url_access'
+            }
+            , {
+                data: 'data'
+                , name: 'data'
+                , width: '300px'
+            }
+            , {
+                data: 'description'
+                , name: 'description'
+            }
+        ]
+    })
 
 	//var filter = function() {
 	//	var val = $.fn.dataTable.util.escapeRegex($(this).val());
