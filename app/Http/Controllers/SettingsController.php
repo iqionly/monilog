@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -83,10 +84,14 @@ class SettingsController extends Controller
 
         $token = $this->get_token($settings);
 
-        $client = $this->getClient($token)->get($settings->url_log, [
-            '_start_date' => $last_date_data,
-            '_limit' => $this->limitation
-        ]);
+        try{
+            $client = $this->getClient($token)->get($settings->url_log, [
+                '_start_date' => $last_date_data,
+                '_limit' => $this->limitation
+            ]);
+        } catch (ConnectionException $ce) {
+            return response()->json(['message' => 'Cannot Resolve Host'], 402);
+        }
 
         $response = $client->collect()->map(function($item) {
             return [
@@ -172,8 +177,11 @@ class SettingsController extends Controller
 
         $token = $this->get_token($settings);
 
-        $client = $this->getClient($token)->get($settings->url_employee);
-
+        try {
+            $client = $this->getClient($token)->get($settings->url_employee);
+        } catch (ConnectionException $ce) {
+            return response()->json(['message' => 'Cannot Resolve Host'], 402);
+        }
         $response = $client->collect('data')->toArray();
 
         if(!empty($response)) {
@@ -203,7 +211,11 @@ class SettingsController extends Controller
 
         $token = $this->get_token($settings);
 
-        $client = $this->getClient($token)->get($settings->url_user);
+        try{
+            $client = $this->getClient($token)->get($settings->url_user);
+        } catch (ConnectionException $ce) {
+            return response()->json(['message' => 'Cannot Resolve Host'], 402);
+        }
 
         $response = array_values($client->collect('data')->map(function($item){
             return [
@@ -230,19 +242,23 @@ class SettingsController extends Controller
             return Cache::get('token');
         }
 
-        $client = $this->getClient()->post(!empty($settings->url_api) ? $settings->url_api . '/login_token' : $this->urlApi . '/login_token', [
-            'email' => $settings->email ?? 'rizky@kabayan.id',
-            'password' => $settings->password ?? 'MyAPI2022'
-        ]);
+        try{
+            $client = $this->getClient()->post(!empty($settings->url_api) ? $settings->url_api . '/login_token' : $this->urlApi . '/login_token', [
+                'email' => $settings->email ?? 'rizky@kabayan.id',
+                'password' => $settings->password ?? 'MyAPI2022'
+            ]);
+    
+            $response = $client->object();
+            $token = $response->token;
+            Cache::put('token', $token, now()->addMinutes(4));
+            Cache::forget('new_url');
+            $settings->token_api = $token;
+            $settings->save();
+            return $token;
+        } catch (ConnectionException $ce) {
+            return '--Cannot Resolve Connection--';
+        }
 
-        $response = $client->object();
-        $token = $response->token;
-        Cache::put('token', $token, now()->addMinutes(4));
-        Cache::forget('new_url');
-        $settings->token_api = $token;
-        $settings->save();
-
-        return $token;
     }
 
     private function getClient($token = null) {
