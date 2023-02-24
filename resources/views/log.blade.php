@@ -239,7 +239,8 @@
     });
 
     table_user = $('#log-user').DataTable({
-         processing: true
+        processing: true,
+        lengthMenu: [ 10, 25, 50, 75, 100, 500, 1000 ]
         , serverSide: true
         , searchDelay: 1200
         , ajax: {
@@ -248,6 +249,7 @@
                 user_id: {{ $user->user_id ?? 'null' }}
             }
         }
+        , autoWidth: false
         , columns: [{
                 data: 'user_id'
                 , name: 'user_id'
@@ -259,17 +261,42 @@
             , {
                 data: 'url_access'
                 , name: 'url_access'
+                , width: '150px'
             }
             , {
                 data: 'data'
                 , name: 'data'
-                , width: '300px'
+                , width: '150px'
             }
             , {
                 data: 'description'
                 , name: 'description'
             }
-        ]
+        ],
+        columnDefs: [
+            {
+                render: function (data, type, full, meta) {
+                    return "<div class='text-wrap' style='width:200px;'>" + data + "</div>";
+                },
+                targets: 3
+            },
+            {
+                render: function (data, type, full, meta) {
+                    return "<div class='text-wrap' style='width:250px;'>" + data + "</div>";
+                },
+                targets: 2
+            }
+        ],
+        dom: `<'row'<'col-sm-4 text-left'f><'col-sm-2 text-left'l><'col-sm-6 text-right'B>>
+			<'row'<'col-sm-12'tr>>
+			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+        buttons: [
+            'print',
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+        ],
+        select: true
     })
 
 	//var filter = function() {
