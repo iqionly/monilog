@@ -276,7 +276,7 @@
         columnDefs: [
             {
                 render: function (data, type, full, meta) {
-                    return "<div class='text-wrap' style='width:200px;'>" + data + "</div>";
+                    return "<div class='text-wrap text-light bg-dark p-2 rounded' style='width:200px;'>" + data + "</div>";
                 },
                 targets: 3
             },
