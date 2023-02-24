@@ -81,8 +81,9 @@ class DashboardController extends Controller
             return [];
         }
 
+        $columns = $request->columns;
+
         $log_user = Log::where('user_id', (int) $request->user_id)
-            ->orderBy('created_at', 'desc')
             ->skip($request->start)
             ->take($request->length)
             ->when($keyword = $request->search['value'], function($noquery) use ($keyword) {
@@ -94,7 +95,11 @@ class DashboardController extends Controller
                 $noquery->orWhere('updated_at', 'like', '%'.$keyword.'%');
                 $noquery->orWhere('log_mytalent_id', 'like', '%'.$keyword.'%');
             })
-            ->get();
+            ->when($orders = $request->order, function($noquery) use ($orders, $columns) {
+                foreach ($orders as $key => $order) {
+                    $noquery->orderBy($columns[$order['column']]['data'], $order['dir']);
+                }
+            })->get();
 
         $total_recods = Log::where('user_id', (int) $request->user_id )->count();
 
@@ -120,6 +125,8 @@ class DashboardController extends Controller
 
     public function log_datatable(Request $request)
     {   
+        $columns = $request->columns;
+        
         $logs = Log::select('url_access', 'user_id', 'data', 'description', 'created_at', 'updated_at', 'log_mytalent_id')
             ->skip($request->start)
             ->take($request->length)
@@ -131,6 +138,11 @@ class DashboardController extends Controller
                 $noquery->orWhere('created_at', 'like', '%'.$keyword.'%');
                 $noquery->orWhere('updated_at', 'like', '%'.$keyword.'%');
                 $noquery->orWhere('log_mytalent_id', 'like', '%'.$keyword.'%');
+            })
+            ->when($orders = $request->order, function($noquery) use ($orders, $columns) {
+                foreach ($orders as $key => $order) {
+                    $noquery->orderBy($columns[$order['column']]['data'], $order['dir']);
+                }
             });
         
         $logs = $logs->get()

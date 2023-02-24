@@ -273,6 +273,7 @@
                 , name: 'description'
             }
         ],
+        responsive: true,
         columnDefs: [
             {
                 render: function (data, type, full, meta) {
