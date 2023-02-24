@@ -295,8 +295,9 @@ class DashboardController extends Controller
     }
 
     public function graph_access(Request $request) {
-        if(Cache::has('graph3_'.(int) $request->user)) {
-            return Cache::get('graph3_'.(int) $request->user);
+        $intUser = (int) $request->user ?: '';
+        if(Cache::has('graph3_'.$intUser) && count(Cache::get('graph3_'.$intUser)) == 0) {
+            return Cache::get('graph3_'.$intUser);
         }
         $date = $this->dateWeekAgo;
         $query = [
@@ -305,7 +306,10 @@ class DashboardController extends Controller
             ['$group' => ['_id' => ['year' => '$created_at.year', 'month' => '$created_at.month', 'day' => '$created_at.day'], 'count' => ['$sum' => 1]]],
             ['$sort' => ['_id.year' => 1, '_id.month' => 1, '_id.day' => 1]]];
         if($request->user != null) {
-            $query[0]['$match']['user_id'] = (int) $request->user;
+            $query[0]['$match'] = [
+                'created_at' => ['$gte' => new UTCDateTime(new DateTime($date))],
+                'user_id' => $intUser
+            ];
         }
         $data = Log::raw(function($collection) use ($query) {
             return $collection->aggregate($query);
@@ -316,7 +320,7 @@ class DashboardController extends Controller
         $graph_data = $data->pluck('count');
 
         $result = ['dates' => $graph_date, 'datas' => $graph_data];
-        Cache::put('graph3_'.(int) $request->user, $result, 120);
+        Cache::put('graph3_'.$intUser, $result, 120);
         return response()->json($result);
     }
 }
