@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="text-center" style="margin-top: 80px;">
-    <h1 class="text-white">SELAMAT DATANG DI MONITOR LOG<br>MYTALENT IOH</h1>
-    <p class="text-white">Data Performance Employee di MyTalent</p>
+    <h1 class="text-white">SELAMAT DATANG DI DAILY INTERACTIVE ACTIVITY LOG<br>MYTALENT IOH</h1>
+    <p class="text-white">Disini menampilkan data performa serta access user ke MyTalent</p>
 </div>
 
 <div class="toolbar py-5 py-lg-15" id="kt_toolbar">
@@ -58,7 +58,7 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body d-flex justify-content-center">
-                                    <span>Please Select 1 User in Log Data or User Data Tab, with clicking their UserID</span>
+                                    <div class="alert alert-info m-0">Please Select 1 User in Log Data or User Data Tab, with clicking their UserID</div class="alert alert-info m-0">
                                 </div>
                             </div>
                         </div>

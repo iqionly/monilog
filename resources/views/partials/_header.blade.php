@@ -10,8 +10,8 @@
             <!--begin::Header Logo-->
             <div class="header-logo">
                 <a href="index.html">
-                    <img alt="Logo" src="assets/media/logos/logo-letter-9.png" class="logo-default max-h-40px" />
-                    <img alt="Logo" src="assets/media/logos/logo-letter-1.png" class="logo-sticky max-h-40px" />
+                    <img alt="Logo" src="{{ asset('assets/images/dialog-white.png') }}" class="logo-default max-h-40px" />
+                    <img alt="Logo" src="{{ asset('assets/images/dialog.png') }}" class="logo-sticky max-h-40px" />
                 </a>
             </div>
 
