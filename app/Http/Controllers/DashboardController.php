@@ -83,7 +83,8 @@ class DashboardController extends Controller
 
         $columns = $request->columns;
 
-        $log_user = Log::where('user_id', (int) $request->user_id)
+        $log_user = Log::with('user')
+            ->where('user_id', (int) $request->user_id)
             ->skip($request->start)
             ->take($request->length)
             ->when($keyword = $request->search['value'], function($noquery) use ($keyword) {
@@ -126,8 +127,9 @@ class DashboardController extends Controller
     public function log_datatable(Request $request)
     {   
         $columns = $request->columns;
-        
+
         $logs = Log::select('url_access', 'user_id', 'data', 'description', 'created_at', 'updated_at', 'log_mytalent_id')
+            ->options(['allowDiskUse' => true])
             ->skip($request->start)
             ->take($request->length)
             ->when($keyword = $request->search['value'], function($noquery) use ($keyword) {
@@ -144,6 +146,12 @@ class DashboardController extends Controller
                     $noquery->orderBy($columns[$order['column']]['data'], $order['dir']);
                 }
             });
+        
+        foreach ($columns as $key => $value) {
+            if($value['searchable'] && !empty($value['search']['value'])) {
+                $logs->where($value['data'], '=', $value['search']['value']);
+            }
+        }
         
         $logs = $logs->get()
             ->map(function($data) {
@@ -164,7 +172,19 @@ class DashboardController extends Controller
             $noquery->orWhere('updated_at', 'like', '%'.$keyword.'%');
             $noquery->orWhere('log_mytalent_id', 'like', '%'.$keyword.'%');
         })
-        ->count();
+        ->when($orders = $request->order, function($noquery) use ($orders, $columns) {
+            foreach ($orders as $key => $order) {
+                $noquery->orderBy($columns[$order['column']]['data'], $order['dir']);
+            }
+        });
+
+        foreach ($columns as $key => $value) {
+            if($value['searchable'] && !empty($value['search']['value'])) {
+                $filtered_records->where($value['data'], '=', $value['search']['value']);
+            }
+        }
+
+        $filtered_records = $filtered_records->count();
 
         return [
             'data' => $logs,

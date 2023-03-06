@@ -139,14 +139,27 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--begin::Page Scripts(used by this page)-->
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
-		@yield('scripts')
 		<script>
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
+		$.extend(true, $.fn.dataTable.defaults, {
+			searchDelay: 1500,
+			preDrawCallback: function( settings ) {
+				KTApp.block($(this).closest('.card'));
+			},
+			drawCallback: function(settings) {
+				KTApp.unblock($(this).closest('.card'));
+			}
+		});
+		$.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
+			KTApp.unblock($('#'+settings.sTableId).closest('.card'));
+			alert('Server Error: '+ message);
+		};
 		</script>
+		@yield('scripts')
 		<!--end::Page Scripts-->
 	</body>
 

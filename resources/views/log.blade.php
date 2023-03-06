@@ -200,9 +200,7 @@
         $(this).tab('show')
     })
     table = $('#log-table').DataTable({
-        processing: true
-        , serverSide: true
-        , searchDelay: 1200
+        serverSide: true
         , ajax: {
             url: urlLogDataTable
         }
@@ -235,14 +233,13 @@
                 data: 'updated_at'
                 , name: 'updated_at'
             }
-        ]
+        ],
+        order: [[5, 'desc']]
     });
 
     table_user = $('#log-user').DataTable({
-        processing: true,
         lengthMenu: [ 10, 25, 50, 75, 100, 500, 1000 ]
         , serverSide: true
-        , searchDelay: 1200
         , ajax: {
             url: urlLogUser,
             data: {
@@ -251,8 +248,8 @@
         }
         , autoWidth: false
         , columns: [{
-                data: 'user_id'
-                , name: 'user_id'
+                data: 'user.nik'
+                , name: 'user.nik'
             }
             , {
                 data: 'created_at'
