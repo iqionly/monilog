@@ -18,7 +18,7 @@
 			<div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
 
 				<div class="text-center py-5" style="margin-top: 80px;">
-                    <h1 class="text-white">SELAMAT DATANG DI MONITOR LOG<br>MYTALENT IOH</h1>
+                    <h1 class="text-white">SELAMAT DATANG DI DAILY INTERACTIVE ACTIVITY LOG<br>MYTALENT IOH</h1>
                     <p class="text-white">Data Performance Employee di MyTalent</p>
                 </div>
 				<!--[html-partial:include:{"file":"partials/_subheader.html"}]/-->

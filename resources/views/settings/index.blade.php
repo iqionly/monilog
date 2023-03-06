@@ -492,6 +492,11 @@
                             </div>
                         </form>
                         <!--end::Form-->
+
+                        <div class="card-footer justify-content-end text-right">
+                            <button type="button" class="btn btn-info mr-2 btn-sync">Sync Now</button>
+                            <button type="submit" class="btn btn-success mr-2" form="form-settings">Save Changes</button>
+                        </div>
                     </div>
                     <!--end::Card-->
                 </div>
