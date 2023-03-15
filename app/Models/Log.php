@@ -32,6 +32,6 @@ class Log extends Model
     }
 
     public function countLogADay() {
-        return self::where('created_at', '>', now()->subDay()->startOfDay())->count();
+        return self::where('created_at', '>', now()->startOfDay())->count();
     }
 }

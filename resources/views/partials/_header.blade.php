@@ -52,7 +52,7 @@
         <div class="topbar">
 
             <!--begin::Search-->
-            <div class="dropdown">
+            {{-- <div class="dropdown">
 
                 <!--begin::Toggle-->
                 <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
@@ -74,7 +74,7 @@
 
                 <!--end::Toggle-->
 
-                <!--begin::Dropdown-->
+                {{-- <!--begin::Dropdown-->
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
 
 					@include('partials._extras.dropdown.search-dropdown')
@@ -82,7 +82,7 @@
                 </div>
 
                 <!--end::Dropdown-->
-            </div>
+            </div> --}}
 
             <!--end::Search-->
 
