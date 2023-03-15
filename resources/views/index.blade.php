@@ -142,14 +142,28 @@ License: You must have a valid license purchased only from themeforest(the above
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
 		<script src="{{ asset('js/custom.js')}}"></script>
-		@yield('scripts')
+
 		<script>
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
+		$.extend(true, $.fn.dataTable.defaults, {
+			searchDelay: 1500,
+			preDrawCallback: function( settings ) {
+				KTApp.block($(this).closest('.card'));
+			},
+			drawCallback: function(settings) {
+				KTApp.unblock($(this).closest('.card'));
+			}
+		});
+		$.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
+			KTApp.unblock($('#'+settings.sTableId).closest('.card'));
+			alert('Server Error: '+ message);
+		};
 		</script>
+		@yield('scripts')
 		<!--end::Page Scripts-->
 	</body>
 
