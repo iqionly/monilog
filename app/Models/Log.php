@@ -30,4 +30,8 @@ class Log extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
+
+    public function countLogADay() {
+        return self::where('created_at', '>', now()->subDay()->startOfDay())->count();
+    }
 }

@@ -21,7 +21,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<meta name="description" content="Updates and statistics" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<meta name="csrf-token" content="{{ csrf_token() }}" />
-		<link rel="canonical" href="https://keenthemes.com/metronic" />
+		<link rel="canonical" href="{{ env('APP_ENV') }}" />
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -139,6 +139,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--begin::Page Scripts(used by this page)-->
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+		<script src="{{ asset('js/custom.js')}}"></script>
 		@yield('scripts')
 		<script>
 		$.ajaxSetup({

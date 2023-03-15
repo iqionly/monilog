@@ -47,78 +47,6 @@
 
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center">
-
-
-                <!--begin::Button-->
-                <a href="#" class="btn btn-transparent-white font-weight-bold  py-3 px-6 mr-2">
-                    Reports
-                </a>
-                <!--end::Button-->
-
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="" data-placement="top" data-original-title="Quick actions">
-                    <a href="#" class="btn btn-white font-weight-bold py-3 px-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Actions
-                    </a>
-                    <div class="dropdown-menu p-0 m-0 dropdown-menu-md dropdown-menu-right">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover py-5">
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-drop"></i></span>
-                                    <span class="navi-text">New Group</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-list-3"></i></span>
-                                    <span class="navi-text">Contacts</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-rocket-1"></i></span>
-                                    <span class="navi-text">Groups</span>
-                                    <span class="navi-link-badge">
-                                        <span class="label label-light-primary label-inline font-weight-bold">new</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
-                                    <span class="navi-text">Calls</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-gear"></i></span>
-                                    <span class="navi-text">Settings</span>
-                                </a>
-                            </li>
-
-                            <li class="navi-separator my-3"></li>
-
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-magnifier-tool"></i></span>
-                                    <span class="navi-text">Help</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
-                                    <span class="navi-text">Privacy</span>
-                                    <span class="navi-link-badge">
-                                        <span class="label label-light-danger label-rounded font-weight-bold">5</span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                        <!--end::Navigation-->
-                    </div>
-                </div>
-                <!--end::Dropdown-->
             </div>
             <!--end::Toolbar-->
         </div>
@@ -134,85 +62,7 @@
                     <!--begin::Profile Card-->
                     <div class="card card-custom card-stretch">
                         <!--begin::Body-->
-                        <div class="card-body pt-4">
-                            <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end">
-                                <div class="dropdown dropdown-inline">
-                                    <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="ki ki-bold-more-hor"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <!--begin::Navigation-->
-                                        <ul class="navi navi-hover py-5">
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-drop"></i>
-                                                    </span>
-                                                    <span class="navi-text">New Group</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-list-3"></i>
-                                                    </span>
-                                                    <span class="navi-text">Contacts</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-rocket-1"></i>
-                                                    </span>
-                                                    <span class="navi-text">Groups</span>
-                                                    <span class="navi-link-badge">
-                                                        <span class="label label-light-primary label-inline font-weight-bold">new</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-bell-2"></i>
-                                                    </span>
-                                                    <span class="navi-text">Calls</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-gear"></i>
-                                                    </span>
-                                                    <span class="navi-text">Settings</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-separator my-3"></li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-magnifier-tool"></i>
-                                                    </span>
-                                                    <span class="navi-text">Help</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-bell-2"></i>
-                                                    </span>
-                                                    <span class="navi-text">Privacy</span>
-                                                    <span class="navi-link-badge">
-                                                        <span class="label label-light-danger label-rounded font-weight-bold">5</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <!--end::Navigation-->
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end::Toolbar-->
+                        <div class="card-body">
                             <!--begin::User-->
                             <div class="d-flex align-items-center">
                                 <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
@@ -287,8 +137,8 @@
                         <!--begin::Header-->
                         <div class="card-header py-3">
                             <div class="card-title align-items-start flex-column">
-                                <h3 class="card-label font-weight-bolder text-dark">API Configuration</h3>
-                                <span class="text-muted font-weight-bold font-size-sm mt-1">Change your API MyTalent</span>
+                                <h3 class="card-label font-weight-bolder text-dark">Configuration</h3>
+                                <span class="text-muted font-weight-bold font-size-sm mt-1">Change your {{ ucwords(env('APP_NAME')) }} Settings</span>
                             </div>
                             <div class="card-toolbar">
                                 <button type="button" class="btn btn-info mr-2 btn-sync">Sync Now</button>
