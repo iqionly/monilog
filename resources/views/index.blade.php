@@ -33,17 +33,31 @@ License: You must have a valid license purchased only from themeforest(the above
 		<link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet">
+		<link href="{{ asset('assets/css/lock-login.css') }}" rel="stylesheet">
 		<!--end::Global Theme Styles-->
 		
 		<!--begin::Layout Themes(used by all pages)-->
 		<!--end::Layout Themes-->
 		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
+
+		<style>
+			.lock-login{
+				width: 100vw;
+				height: 100vh;
+
+				/* background: red; */
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				z-index: 98;
+			}
+		</style>
 	</head>
 
 	<!--end::Head-->
 
 	<!--begin::Body-->
-	<body id="kt_body" style="background-image: url({{ asset('assets/media/bg/bg-10.jpg') }})" class="page-loading-enabled page-loading quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled aside-enabled aside-static page-loading">
+	<body id="kt_body" class="page-loading-enabled page-loading quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled aside-enabled aside-static page-loading">
 
 		@include('partials._page-loader')
 		<!--[html-partial:include:{"file":"partials/_page-loader.html"}]/-->
@@ -165,6 +179,73 @@ License: You must have a valid license purchased only from themeforest(the above
 		</script>
 		@yield('scripts')
 		<!--end::Page Scripts-->
+
+		<script
+        src="assets/js/ab-particles.min.js"
+        integrity="sha384-HI+YXFmq6RX6R45hGuCOv6U/XhbS6swme7nnQVc8g6QfhucST79WEzlK6XMbanUp"
+        crossorigin="anonymous"
+        defer>
+		</script>
+		<script defer>
+			$(document).ready(function() {
+				particles(speed=15, avoidMouse=false, opacity=65);
+			});
+		</script>
+
+
+		<script>
+			var tampilkan_lock = false;
+
+			function buka_lock_login(){
+				$(".lock-login").hide();
+				localStorage.setItem("lock_login", false);
+			} 
+
+			function tampilkan_lock_login(){
+				$(".lock-login").show();
+			}
+
+			tampilkan_lock = localStorage.getItem("lock_login");
+
+			if(tampilkan_lock=="false"){
+				// alert("buka");
+				setTimeout(() => {
+					buka_lock_login();
+				}, 500);
+			}
+			
+		</script>
+		<div class="lock-login">
+			<form onsubmit="return false;">
+				<label for="password">Password</label>
+				<input id="password" type="password" pattern="indosat2020" placeholder="Enter your password" required="required"/>
+				<input id="login" type="checkbox"/>
+				<label class="login-button" for="login" onclick="buka_lock_login()"><span>Enter</span>
+					<svg>
+					<path d="M10,17V14H3V10H10V7L15,12L10,17M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V16H7V20H17V4H7V8H5V4A2,2 0 0,1 7,2Z"></path>
+					</svg>
+				</label>
+				<div class="padlock">
+					<div class="padlock__hook">
+					<div class="padlock__hook-body"></div>
+					<div class="padlock__hook-body"></div>
+					</div>
+					<div class="padlock__body">
+					<div class="padlock__face">
+						<div class="padlock__eye padlock__eye--left"></div>
+						<div class="padlock__eye padlock__eye--right"></div>
+						<div class="padlock__mouth padlock__mouth--one"></div>
+						<div class="padlock__mouth padlock__mouth--two"></div>
+						<div class="padlock__mouth padlock__mouth--three"></div>
+					</div>
+					</div>
+				</div>
+				<!-- <div class="app">
+					<h1>You logged in! 🎉</h1>
+					<button class="logout-button" type="reset">Logout</button>
+				</div><span class="logout-message">You have logged out.</span> -->
+			</form>
+		</div>
 	</body>
 
 	<!--end::Body-->
