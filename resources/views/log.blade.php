@@ -1,49 +1,50 @@
 @extends('index')
 
 @section('content')
-<div class="text-center" style="margin-top: 80px;">
+<!-- <div class="text-center" style="margin-top: 80px;">
     <h1 class="text-white">SELAMAT DATANG DI DAILY INTERACTIVE ACTIVITY LOG<br>MYTALENT IOH</h1>
     <p class="text-white">Disini menampilkan data performa serta access user ke MyTalent</p>
 </div>
 
 <div class="toolbar py-5 py-lg-15" id="kt_toolbar">
-</div>
+</div> -->
 
 <!--start:Container-->
 <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
     <div class="content flex-row-fluid" id="kt_content">
-        <div class="d-flex justify-content-center mb-5">
-            <ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist" style="margin-top: -25px;">
-                <li class="nav-item m-2" role="presentation">
-                    <button class="nav-link text-white btn btn-primary active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                        <i class='bx bxs-category-alt bx-sm me-2'></i>
+        <!-- <div class="headerBackground">
+            <canvas id="particles" style="width: 100%; height: auto;"></canvas>
+        </div> -->
+        <div style="margin-top: 80px;">
+
+        </div>
+        <div class="d-flex">
+            <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active tabBewe" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
                         <span class="fw-bold">Overview</span>
                     </button>
                 </li>
 
-                <li class="nav-item m-2" role="presentation">
-                    <button class="nav-link text-white btn btn-primary" id="analytic-table-tab" data-toggle="pill" data-target="#analytic-table" type="button" role="tab" aria-controls="analytic-table" aria-selected="false">
-                        <i class='bx bxs-bar-chart-alt-2 bx-sm me-2'></i>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link tabBewe" id="analytic-table-tab" data-toggle="pill" data-target="#analytic-table" type="button" role="tab" aria-controls="analytic-table" aria-selected="false">
                         <span class="fw-bold">Analytic Table</span>
                     </button>
                 </li>
 
-                <li class="nav-item m-2" role="presentation">
-                    <button class="nav-link text-white btn btn-primary" id="log-data-tab" data-toggle="pill" data-target="#log-data" type="button" role="tab" aria-controls="log-data" aria-selected="false">
-                        <i class='bx bx-library bx-sm me-2'></i>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link tabBewe" id="log-data-tab" data-toggle="pill" data-target="#log-data" type="button" role="tab" aria-controls="log-data" aria-selected="false">
                         <span class="fw-bold">Log Data</span>
                     </button>
                 </li>
 
-                <li class="nav-item m-2" role="presentation">
-                    <button class="nav-link text-white btn btn-primary" id="user-data-tab" data-toggle="pill" data-target="#user-data" type="button" role="tab" aria-controls="luser-data" aria-selected="false">
-                        <i class='bx bx-library bx-sm me-2'></i>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link tabBewe" id="user-data-tab" data-toggle="pill" data-target="#user-data" type="button" role="tab" aria-controls="luser-data" aria-selected="false">
                         <span class="fw-bold">Users Data</span>
                     </button>
                 </li>
             </ul>
         </div>
-
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
                 @include('partials.dashboard')

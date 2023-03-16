@@ -9,7 +9,7 @@
 
             <!--begin::Header Logo-->
             <div class="header-logo">
-                <a href="index.html">
+                <a href="./">
                     <img alt="Logo" src="{{ asset('assets/images/dialog-white.png') }}" class="logo-default max-h-40px" />
                     <img alt="Logo" src="{{ asset('assets/images/dialog.png') }}" class="logo-sticky max-h-40px" />
                 </a>
