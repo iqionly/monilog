@@ -22,10 +22,10 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->settings = Setting::first();
-        if((int) $this->settings->get_weeks == 0) {
+        if($this->settings && (int) $this->settings->get_weeks == 0) {
             $this->dateWeekAgo = Carbon::parse(0)->format('Y-m-d');
         } else {
-            $this->dateWeekAgo = Carbon::now()->subWeeks($this->settings->get_weeks)->format('Y-m-d');
+            $this->dateWeekAgo = Carbon::now()->subWeeks($this->settings->get_weeks ?? 4)->format('Y-m-d');
         }
     }
 
