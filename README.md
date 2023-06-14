@@ -9,6 +9,14 @@
 
 ## About Laravel
 
+First we need:
+config env to your mongodb
+php artisan migrate
+setting api MyTalent to consume Log
+- email: rizky@k*********
+- password: M\*\*\*I2\*\*2 (Hide or chat to me for settings first!)
+settings url to all api MyTalent
+
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
