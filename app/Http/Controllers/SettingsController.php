@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
+use ErrorException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -260,6 +261,8 @@ class SettingsController extends Controller
             return $token;
         } catch (ConnectionException $ce) {
             return '--Cannot Resolve Connection--';
+        } catch (ErrorException $ee) {
+            return '--Please Add Url First--';
         }
 
     }
