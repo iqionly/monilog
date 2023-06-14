@@ -279,7 +279,8 @@
                                         <h5 class="font-weight-bold mb-6">Log Sync Retry:</h5>
                                     </div>
                                 </div>
-                                @forelse($settings->sync_try as $key => $value)
+
+                                @forelse($settings->sync_try ?? [] as $key => $value)
                                 <div class="form-group row mb-1">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-danger text-left text-lg-right p-0">Retry: {{ $value['retry'] }}</label>
                                     <div class="col-lg-9 col-xl-6 d-flex">
