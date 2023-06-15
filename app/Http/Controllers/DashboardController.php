@@ -156,7 +156,6 @@ class DashboardController extends Controller
         $logs = $logs->get()
             ->map(function($data) {
                 $data->user_el = '<a href="'.url('/'.$data->user_id).'">'.$data->user_id.'</a>';
-                $data->data = '<code class="text-wrap">'.$data->data.'</code>';
                 return $data;
             });
             

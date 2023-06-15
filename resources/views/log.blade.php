@@ -112,7 +112,7 @@
                                     </div>
                                 </form> --}}
                                 <div class="table-responsive">
-                                    <table class="table table-separate table-checkable" style="width:100%!important;" id="log-table">
+                                    <table class="table table-head-custom table-vertical-center table-separate table-checkable" style="width:100%!important;" id="log-table">
                                         <thead>
                                             <tr>
                                                 <th>Log ID</th>
@@ -233,6 +233,20 @@
             , {
                 data: 'updated_at'
                 , name: 'updated_at'
+            }
+        ],
+        columnDefs: [
+            {
+                render: function (data, type, full, meta) {
+                    return "<div class='text-wrap text-light bg-dark p-2 rounded' style='width:200px;'>" + data + "</div>";
+                },
+                targets: 3
+            },
+            {
+                render: function (data, type, full, meta) {
+                    return "<div class='text-wrap' style='width:250px;'>" + data + "</div>";
+                },
+                targets: 2
             }
         ],
         order: [[5, 'desc']]

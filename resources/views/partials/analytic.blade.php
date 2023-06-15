@@ -17,53 +17,55 @@
             </div>
 
             <div class="card-body d-flex flex-column">
-                <table class="table table-head-custom table-vertical-center" id="log-user">
-                    <thead>
-                        <tr class="text-left">
-                            <th class="pr-0" style="width: 50px">authors</th>
-                            <th>access at</th>
-                            <th style="min-width: 150px">url_access</th>
-                            <th style="min-width: 150px">data</th>
-                            <th style="min-width: 150px">description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- @forelse($log_user as $key => $value)
-                            <tr>
-                            <td class="pr-0">
-                                <div class="symbol symbol-50 symbol-light mt-1">
-                                    <span class="symbol-label">
-                                        <img src="{{ asset('assets/media/svg/avatars/001-boy.svg') }}" class="h-75 align-self-end" alt="">
+                <div class="table-responsive">
+                    <table class="table table-head-custom table-vertical-center" id="log-user">
+                        <thead>
+                            <tr class="text-left">
+                                <th class="pr-0" style="width: 50px">authors</th>
+                                <th>access at</th>
+                                <th style="min-width: 150px">url_access</th>
+                                <th style="min-width: 150px">data</th>
+                                <th style="min-width: 150px">description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- @forelse($log_user as $key => $value)
+                                <tr>
+                                <td class="pr-0">
+                                    <div class="symbol symbol-50 symbol-light mt-1">
+                                        <span class="symbol-label">
+                                            <img src="{{ asset('assets/media/svg/avatars/001-boy.svg') }}" class="h-75 align-self-end" alt="">
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ ucwords(strtolower($user->full_name)) }}</a>
+                                    <span class="text-muted font-weight-bold text-muted d-block">{{ $user->nik }}</span>
+                                </td>
+                                <td>
+                                    {{ $value->created_at }}
+                                </td>
+                                <td style="max-width: 400px;">
+                                    <span class="text-secondary font-weight-bold">
+                                        {{ $value->url_access }}
                                     </span>
-                                </div>
-                            </td>
-                            <td class="pl-0">
-                                <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ ucwords(strtolower($user->full_name)) }}</a>
-                                <span class="text-muted font-weight-bold text-muted d-block">{{ $user->nik }}</span>
-                            </td>
-                            <td>
-                                {{ $value->created_at }}
-                            </td>
-                            <td style="max-width: 400px;">
-                                <span class="text-secondary font-weight-bold">
-                                    {{ $value->url_access }}
-                                </span>
-                            </td>
-                            <td style="max-width: 300px;">
-                                <code class="text-wrap">{{ $value->data }}</code>
-                            </td>
-                        </tr>    
-                        @empty
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>-- User Not Have Log Yet, or Select Another User--</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        @endforelse --}}
-                    </tbody>
-                </table>
+                                </td>
+                                <td style="max-width: 300px;">
+                                    <code class="text-wrap">{{ $value->data }}</code>
+                                </td>
+                            </tr>    
+                            @empty
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>-- User Not Have Log Yet, or Select Another User--</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            @endforelse --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
